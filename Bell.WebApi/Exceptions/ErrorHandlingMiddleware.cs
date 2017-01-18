@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Bell.Common.Logging;
+using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using System;
 using System.Net;
@@ -25,6 +26,11 @@ namespace Bell.Common.Exceptions
 
         #region Public Methods
 
+        /// <summary>
+        /// Handles invoking each request
+        /// </summary>
+        /// <param name="context">The http context</param>
+        /// <returns>An invocation task</returns>
         public async Task Invoke(HttpContext context)
         {
             try
@@ -41,15 +47,17 @@ namespace Bell.Common.Exceptions
 
         #region Private Methods
 
-        private static async Task HandleExceptionAsync(HttpContext context, Exception exception)
+        private async Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
             if (exception == null) return;
 
-            var code = HttpStatusCode.InternalServerError; 
+            var code = HttpStatusCode.InternalServerError;
 
             //if (exception is MyNotFoundException) code = HttpStatusCode.NotFound;
             //else if (exception is MyUnauthorizedException) code = HttpStatusCode.Unauthorized;
             //else if (exception is MyException) code = HttpStatusCode.BadRequest;
+
+            Serilog.Log.Logger.Error(exception, "Exception in middleware!");
 
             await WriteExceptionAsync(context, code, exception).ConfigureAwait(false);
         }
