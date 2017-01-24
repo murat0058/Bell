@@ -1,5 +1,4 @@
-﻿using Bell.Common.Logging;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using System;
 using System.Net;
@@ -49,7 +48,11 @@ namespace Bell.Common.Exceptions
 
         private async Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
-            if (exception == null) return;
+            if (exception != null)
+            {
+
+            }
+ 
 
             var code = HttpStatusCode.InternalServerError;
 
