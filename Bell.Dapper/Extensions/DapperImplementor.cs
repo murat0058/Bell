@@ -290,7 +290,7 @@ namespace Bell.Dapper.Extensions
 
                 IFieldPredicate fieldPredicate = Activator.CreateInstance(predicateType) as IFieldPredicate;
                 fieldPredicate.Not = false;
-                fieldPredicate.Operator = Operator.Eq;
+                fieldPredicate.Operator = Operator.Equals;
                 fieldPredicate.PropertyName = key.Name;
                 fieldPredicate.Value = value;
                 predicates.Add(fieldPredicate);
@@ -317,7 +317,7 @@ namespace Bell.Dapper.Extensions
                                             select new FieldPredicate<T>
                                                        {
                                                            Not = false,
-                                                           Operator = Operator.Eq,
+                                                           Operator = Operator.Equals,
                                                            PropertyName = field.Name,
                                                            Value = field.PropertyInfo.GetValue(entity, null)
                                                        }).Cast<IPredicate>().ToList();
@@ -339,7 +339,7 @@ namespace Bell.Dapper.Extensions
             {
                 IFieldPredicate fieldPredicate = Activator.CreateInstance(predicateType) as IFieldPredicate;
                 fieldPredicate.Not = false;
-                fieldPredicate.Operator = Operator.Eq;
+                fieldPredicate.Operator = Operator.Equals;
                 fieldPredicate.PropertyName = kvp.Key;
                 fieldPredicate.Value = kvp.Value;
                 predicates.Add(fieldPredicate);

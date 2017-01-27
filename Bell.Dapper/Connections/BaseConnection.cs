@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
 
-namespace Bell.Database.Connections
+namespace Bell.Dapper.Connections
 {
     /// <summary>
     /// A base class for DB connections
@@ -18,6 +19,7 @@ namespace Bell.Database.Connections
         /// <param name="connectionString">The connection string</param>
         protected BaseConnection(string connectionString)
         {
+            ConnectionString = connectionString;
         }
 
         #endregion
@@ -38,9 +40,9 @@ namespace Bell.Database.Connections
         /// </summary>
         /// <param name="command">The command to execute</param>
         /// <returns>The task associated with this asynchronous operation</returns>
-        public async Task RunCommandAsync(Func<DbConnection, Task> command)
+        public async Task RunCommandAsync(Func<IDbConnection, Task> command)
         {
-            using (DbConnection connection = CreateConnection())
+            using (IDbConnection connection = CreateConnection())
             {
                 connection.Open();
                 await command(connection);
@@ -54,11 +56,11 @@ namespace Bell.Database.Connections
         /// <typeparam name="TResult">The result of the command</typeparam>
         /// <param name="command">The command to execute</param>
         /// <returns>The result of the command</returns>
-        public async Task<TResult> RunCommandAsync<TResult>(Func<DbConnection, Task<TResult>> command)
+        public async Task<TResult> RunCommandAsync<TResult>(Func<IDbConnection, Task<TResult>> command)
         {
             TResult result;
 
-            using (DbConnection connection = CreateConnection())
+            using (IDbConnection connection = CreateConnection())
             {
                 connection.Open();
                 result = await command(connection);

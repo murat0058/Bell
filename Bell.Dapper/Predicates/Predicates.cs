@@ -8,6 +8,7 @@ using System.Text;
 using Bell.Dapper.Mappers;
 using Bell.Dapper.Sql;
 using Bell.Dapper.Reflection;
+using Bell.Dapper.Extensions;
 
 namespace Bell.Dapper.Predicates
 {
@@ -167,13 +168,13 @@ namespace Bell.Dapper.Predicates
         {
             switch (Operator)
             {
-                case Operator.Gt:
+                case Operator.GreaterThan:
                     return Not ? "<=" : ">";
-                case Operator.Ge:
+                case Operator.GreaterThanEqualTo:
                     return Not ? "<" : ">=";
-                case Operator.Lt:
+                case Operator.LessThan:
                     return Not ? ">=" : "<";
-                case Operator.Le:
+                case Operator.LessThanEqualTo:
                     return Not ? ">" : "<=";
                 case Operator.Like:
                     return Not ? "NOT LIKE" : "LIKE";
@@ -203,9 +204,9 @@ namespace Bell.Dapper.Predicates
 
             if (Value is IEnumerable && !(Value is string))
             {
-                if (Operator != Operator.Eq)
+                if (Operator != Operator.Equals)
                 {
-                    throw new ArgumentException("Operator must be set to Eq for Enumerable types");
+                    throw new ArgumentException("Operator must be set to Equals for Enumerable types");
                 }
 
                 List<string> @params = new List<string>();

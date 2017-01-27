@@ -12,20 +12,28 @@ namespace Bell.Common.Exceptions
         /// <summary>
         /// Instantiates a user reportable exception
         /// </summary>
-        /// <param name="errorCode">The error code for the exception</param>
-        public UserReportableException(string errorCode): base()
+        /// <param name="errorMessageKey">The language translation key for the error message</param>
+        public UserReportableException(string errorMessageKey) : this(new UserReportableMessage(errorMessageKey))
         {
-            ErrorCode = errorCode;
         }
 
         /// <summary>
         /// Instantiates a user reportable exception
         /// </summary>
-        /// <param name="errorCode">The error code for the exception</param>
-        /// <param name="innerException">The inner exception</param>
-        public UserReportableException(string errorCode, Exception innerException): base(errorCode, innerException)
+        /// <param name="errorMessageKey">The language translation key for the error message</param>
+        /// <param name="errorMessageArguments">The argumetns for the generated error message</param>
+        public UserReportableException(string errorMessageKey, params object[] errorMessageArguments) : 
+            this(new UserReportableMessage(errorMessageKey, errorMessageArguments))
         {
-            ErrorCode = errorCode;
+        }
+
+        /// <summary>
+        /// Instantiates a user reportable exception
+        /// </summary>
+        /// <param name="errorMessage">The error message for the exception</param>
+        public UserReportableException(UserReportableMessage errorMessage): base()
+        {
+            ErrorMessage = errorMessage;
         }
 
         #endregion
@@ -33,9 +41,9 @@ namespace Bell.Common.Exceptions
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets the error code of the exception
+        /// Gets the error code for the error message associated with this 
         /// </summary>
-        public string ErrorCode { get; private set; }
+        public UserReportableMessage ErrorMessage { get; private set; }
 
         #endregion
     }
