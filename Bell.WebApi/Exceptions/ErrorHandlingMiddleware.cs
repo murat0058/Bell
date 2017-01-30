@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Bell.Common.Localization;
+using Bell.Common.Logging;
+using Bell.Common.Resources;
+using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using System;
 using System.Net;
@@ -10,15 +13,19 @@ namespace Bell.Common.Exceptions
     {
         #region Private Fields
 
-        private readonly RequestDelegate next;
+        private readonly RequestDelegate _next;
+        private readonly ILog _log;
+        private readonly ILanguageTranslator _translator; 
 
         #endregion
 
         #region Constructors
 
-        public ErrorHandlingMiddleware(RequestDelegate next)
+        public ErrorHandlingMiddleware(RequestDelegate next, ILog log, ILanguageTranslator translator)
         {
-            this.next = next;
+            _next = next;
+            _log = log;
+            _translator = translator;
         }
 
         #endregion
@@ -34,7 +41,7 @@ namespace Bell.Common.Exceptions
         {
             try
             {
-                await next(context);
+                await _next(context);
             }
             catch (Exception ex)
             {
@@ -48,36 +55,57 @@ namespace Bell.Common.Exceptions
 
         private async Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
+            var code = HttpStatusCode.InternalServerError;
+            UserReportableException userReportableException;
+
             if (exception != null)
             {
+                if (exception is UserReportableException)
+                {
+                    code = HttpStatusCode.BadRequest;
+                    userReportableException = (UserReportableException)exception;
+                }
+                else
+                {
+                    var userReportableMessage = new UserReportableMessage(ErrorCodes.ERROR_HAS_OCCURRED);
+                    userReportableException = new UserReportableException(exception, userReportableMessage);
 
+                    _log.Error(exception, await _translator.TranslateAsync("en-US", userReportableMessage.Key));
+                }
+                
+                await WriteExceptionAsync(context, code, userReportableException);
             }
- 
-
-            var code = HttpStatusCode.InternalServerError;
-
-            //if (exception is MyNotFoundException) code = HttpStatusCode.NotFound;
-            //else if (exception is MyUnauthorizedException) code = HttpStatusCode.Unauthorized;
-            //else if (exception is MyException) code = HttpStatusCode.BadRequest;
-
-            Serilog.Log.Logger.Error(exception, "Exception in middleware!");
-
-            await WriteExceptionAsync(context, code, exception).ConfigureAwait(false);
         }
 
-        private static async Task WriteExceptionAsync(HttpContext context, HttpStatusCode code, Exception exception)
+        private async Task WriteExceptionAsync(HttpContext context, HttpStatusCode code, UserReportableException exception)
         {
             var response = context.Response;
             response.ContentType = "application/json";
             response.StatusCode = (int)code;
+
+            // TODO: GET THE LANGUAGE ID HERE  
+            var errorMessage = await _translator.TranslateAsync("en-US", exception.ErrorMessage.Key, exception.ErrorMessage.Arguments);
+
+            var exceptionMessage = exception.Message;
+            var stackTrace = exception.StackTrace;
+
+            if (exception.ErrorMessage.Key == ErrorCodes.ERROR_HAS_OCCURRED &&
+                exception.InnerException != null)
+            {
+                exceptionMessage = exception.InnerException.Message;
+                stackTrace = exception.InnerException.StackTrace;
+            }
+
             await response.WriteAsync(JsonConvert.SerializeObject(new
             {
                 error = new
                 {
-                    message = exception.Message,
-                    exception = exception.GetType().Name
+                    code = exception.ErrorMessage.Key,
+                    message = errorMessage,
+                    exception = exceptionMessage,
+                    stackTrace = stackTrace
                 }
-            })).ConfigureAwait(false);
+            }));
         }
 
         #endregion

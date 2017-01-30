@@ -1,7 +1,10 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using MongoDB.Driver;
 using Serilog;
+using Serilog.Events;
 using System;
+using System.Security.Authentication;
 
 namespace Bell.Common.Logging
 {
@@ -83,6 +86,32 @@ namespace Bell.Common.Logging
                 new LoggerConfiguration()
                 .ReadFrom.Configuration(configuration)
                 .CreateLogger();
+
+            loggerFactory.AddSerilog();
+        }
+
+        /// <summary>
+        /// Configures serilog to work with the logging server
+        /// </summary>
+        /// <param name="loggerFactory">The logger factory</param>
+        /// <param name="url">The url of the DocumentDB server</param>
+        /// <param name="authorizationKey">The authorization key</param>
+        /// <param name="timeToLiveInDays">The time-to-live for log entries (in days)</param>
+        public static void ConfigureLogSever(ILoggerFactory loggerFactory)
+        {
+  //          string connectionString =
+  //@"mongodb://bell-log-db:9OnN0I2ZcCo3Fca9DilrsHT5qnihNch7rZ8zwngfcWvFuHjw0nCnQhj6KKaPlLq3xv3Otis1puCCbzQn80qUfw==@bell-log-db.documents.azure.com:10250/?ssl=true&sslverifycertificate=false";
+  //          MongoClientSettings settings = MongoClientSettings.FromUrl(
+  //            new MongoUrl(connectionString)
+  //          );
+  //          settings.SslSettings =
+  //            new SslSettings() { EnabledSslProtocols = SslProtocols.Tls12 };
+  //          var mongoClient = new MongoClient(settings);
+
+  //          Serilog.Log.Logger =
+  //              new LoggerConfiguration()
+  //              .WriteTo.MongoDB(mongoClient.GetDatabase("log"), restrictedToMinimumLevel: LogEventLevel.Warning)
+  //              .CreateLogger();
 
             loggerFactory.AddSerilog();
         }

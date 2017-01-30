@@ -173,5 +173,24 @@ namespace Bell.Dapper.Extensions
         {
             return await Instance.GetSetAsync<T>(connection, predicate, sort, firstResult, maxResults, transaction, commandTimeout);
         }
+
+        /// <summary>
+        /// Executes an insert query for the specified entity.
+        /// </summary>
+        public static async Task InsertAsync<T>(this IDbConnection connection, IEnumerable<T> entities, IDbTransaction transaction = null, int? commandTimeout = null) where T : class
+        {
+            await Instance.InsertAsync<T>(connection, entities, transaction, commandTimeout);
+        }
+
+        /// <summary>
+        /// Executes an insert query for the specified entity, returning the primary key.  
+        /// If the entity has a single key, just the value is returned.  
+        /// If the entity has a composite key, an IDictionary&lt;string, object&gt; is returned with the key values.
+        /// The key value for the entity will also be updated if the KeyType is a Guid or Identity.
+        /// </summary>
+        public static async Task<dynamic> InsertAsync<T>(this IDbConnection connection, T entity, IDbTransaction transaction = null, int? commandTimeout = null) where T : class
+        {
+            return await Instance.InsertAsync<T>(connection, entity, transaction, commandTimeout);
+        }
     }
 }

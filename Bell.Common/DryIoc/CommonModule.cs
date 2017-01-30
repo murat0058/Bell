@@ -1,24 +1,22 @@
-﻿using System;
-using Bell.Common.Logging;
+﻿using Bell.Common.Logging;
 using DryIoc;
-using Microsoft.Extensions.Configuration;
+using Bell.Common.Localization;
 
 namespace Bell.Common.DryIoc
 {
     /// <summary>
     /// The DryIoc module for this project
     /// </summary>
-    public class CommonModule: IModule
+    public static class CommonModule
     {
         /// <summary> 
-        /// Called when the module is loaded
-        /// </summary>
-        /// <param name="configuration">The application's configuration</param>
+        /// Registers this module with DryIoc
         /// <param name="builder">The registration role of the DryIoc container</param>
         /// <remarks>Used to register the module's types</remarks>
-        public void Load(IConfiguration configuration, IRegistrator builder)
+        public static void Register(IRegistrator builder)
         {
             builder.Register<ILog, Log>();
+            builder.Register<ILanguageTranslator, LanguageTranslator>();
         }
     }
 }

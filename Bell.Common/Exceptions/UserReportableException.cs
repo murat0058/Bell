@@ -36,6 +36,16 @@ namespace Bell.Common.Exceptions
             ErrorMessage = errorMessage;
         }
 
+        /// <summary>
+        /// Instantiates a user reportable exception
+        /// </summary>
+        /// <param name="errorMessage">The error message for the exception</param>
+        /// <param name="exception">The inner exception</param>
+        public UserReportableException(Exception exception, UserReportableMessage errorMessage) : base(errorMessage.Key, exception)
+        {
+            ErrorMessage = errorMessage;
+        }
+
         #endregion
 
         #region Public Properties

@@ -6,6 +6,8 @@ using Dapper;
 using Bell.Dapper.Mappers;
 using Bell.Dapper.Sql;
 using Bell.Dapper.Predicates;
+using System;
+using System.Dynamic;
 
 namespace Bell.Dapper.Extensions
 {
@@ -34,6 +36,20 @@ namespace Bell.Dapper.Extensions
         /// The asynchronous counterpart to <see cref="IDapperImplementor.Count{T}"/>.
         /// </summary>
         Task<int> CountAsync<T>(IDbConnection connection, object predicate = null, IDbTransaction transaction = null, int? commandTimeout = null) where T : class;
+
+        /// <summary>
+        /// The asynchronous counterpart of <see cref="IDapperImplementor.Insert{T}"/>
+        /// </summary>
+        /// <returns></returns>
+        Task InsertAsync<T>(IDbConnection connection, IEnumerable<T> entities, IDbTransaction transaction,
+            int? commandTimeout) where T : class;
+
+        /// <summary>
+        /// The asynchronous counterpart of <see cref="IDapperImplementor.Insert{T}"/>
+        /// </summary>
+        /// <returns></returns>
+        Task<dynamic> InsertAsync<T>(IDbConnection connection, T entity, IDbTransaction transaction,
+            int? commandTimeout) where T : class;
     }
 
     public class DapperAsyncImplementor : DapperImplementor, IDapperAsyncImplementor
@@ -108,6 +124,87 @@ namespace Bell.Dapper.Extensions
             }
 
             return (int)(await connection.QueryAsync(sql, dynamicParameters, transaction, commandTimeout, CommandType.Text)).Single().Total;
+        }
+
+        public async Task InsertAsync<T>(IDbConnection connection, IEnumerable<T> entities, IDbTransaction transaction, int? commandTimeout) where T : class
+        {
+            IClassMapper classMap = SqlGenerator.Configuration.GetMap<T>();
+            var properties = classMap.Properties.Where(p => p.KeyType != KeyType.NotAKey);
+
+            foreach (var e in entities)
+            {
+                foreach (var column in properties)
+                {
+                    if (column.KeyType == KeyType.Guid)
+                    {
+                        Guid comb = SqlGenerator.Configuration.GetNextGuid();
+                        column.PropertyInfo.SetValue(e, comb, null);
+                    }
+                }
+            }
+
+            string sql = SqlGenerator.Insert(classMap);
+
+            await connection.ExecuteAsync(sql, entities, transaction, commandTimeout, CommandType.Text);
+
+            // Do a QueryAsync instead
+            // Then get the list of ids
+            // Then group them var group = Predicates.Group(GroupOperator.Or, Predicates.Field<LogEvent>(le => le.Id == 1))
+            // Then GetList<>?
+        }
+
+        public async Task<dynamic> InsertAsync<T>(IDbConnection connection, T entity, IDbTransaction transaction, int? commandTimeout) where T : class
+        {
+            IClassMapper classMap = SqlGenerator.Configuration.GetMap<T>();
+            List<IPropertyMap> nonIdentityKeyProperties = classMap.Properties.Where(p => p.KeyType == KeyType.Guid || p.KeyType == KeyType.Assigned).ToList();
+            var identityColumn = classMap.Properties.SingleOrDefault(p => p.KeyType == KeyType.Identity);
+            foreach (var column in nonIdentityKeyProperties)
+            {
+                if (column.KeyType == KeyType.Guid)
+                {
+                    Guid comb = SqlGenerator.Configuration.GetNextGuid();
+                    column.PropertyInfo.SetValue(entity, comb, null);
+                }
+            }
+
+            IDictionary<string, object> keyValues = new ExpandoObject();
+            string sql = SqlGenerator.Insert(classMap);
+            if (identityColumn != null)
+            {
+                IEnumerable<long> result;
+                if (SqlGenerator.SupportsMultipleStatements())
+                {
+                    sql += SqlGenerator.Configuration.Dialect.BatchSeperator + SqlGenerator.IdentitySql(classMap);
+                    result = await connection.QueryAsync<long>(sql, entity, transaction, commandTimeout, CommandType.Text);
+                }
+                else
+                {
+                    await connection.ExecuteAsync(sql, entity, transaction, commandTimeout, CommandType.Text);
+                    sql = SqlGenerator.IdentitySql(classMap);
+                    result = await connection.QueryAsync<long>(sql, entity, transaction, commandTimeout, CommandType.Text);
+                }
+
+                long identityValue = result.First();
+                int identityInt = Convert.ToInt32(identityValue);
+                keyValues.Add(identityColumn.Name, identityInt);
+                identityColumn.PropertyInfo.SetValue(entity, identityInt, null);
+            }
+            else
+            {
+                await connection.ExecuteAsync(sql, entity, transaction, commandTimeout, CommandType.Text);
+            }
+
+            foreach (var column in nonIdentityKeyProperties)
+            {
+                keyValues.Add(column.Name, column.PropertyInfo.GetValue(entity, null));
+            }
+
+            if (keyValues.Count == 1)
+            {
+                return keyValues.First().Value;
+            }
+
+            return keyValues;
         }
 
         #endregion
