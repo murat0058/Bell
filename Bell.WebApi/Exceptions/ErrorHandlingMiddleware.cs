@@ -67,7 +67,7 @@ namespace Bell.Common.Exceptions
                 }
                 else
                 {
-                    var userReportableMessage = new UserReportableMessage(ErrorCodes.ERROR_HAS_OCCURRED);
+                    var userReportableMessage = new UserReportableMessage(ErrorMessageKeys.ERROR_HAS_OCCURRED);
                     userReportableException = new UserReportableException(exception, userReportableMessage);
 
                     _log.Error(exception, await _translator.TranslateAsync("en-US", userReportableMessage.Key));
@@ -89,7 +89,7 @@ namespace Bell.Common.Exceptions
             var exceptionMessage = exception.Message;
             var stackTrace = exception.StackTrace;
 
-            if (exception.ErrorMessage.Key == ErrorCodes.ERROR_HAS_OCCURRED &&
+            if (exception.ErrorMessage.Key == ErrorMessageKeys.ERROR_HAS_OCCURRED &&
                 exception.InnerException != null)
             {
                 exceptionMessage = exception.InnerException.Message;

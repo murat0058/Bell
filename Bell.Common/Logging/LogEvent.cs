@@ -1,7 +1,10 @@
-﻿using System;
+﻿using Bell.Json;
+using Newtonsoft.Json;
+using System;
 
 namespace Bell.Common.Logging
 {
+    [JsonConverter(typeof(JsonInterfaceResolver<LogEventRequest>))]
     public class LogEventRequest
     {
         /// <summary>

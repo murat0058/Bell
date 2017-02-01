@@ -117,7 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="DRYIOC_CONFIGURATION_CONTAINER_SHOULD_NOT_BE_NULL" xml:space="preserve">
+    <value>DRYIOC_CONFIGURATION_CONTAINER_SHOULD_NOT_BE_NULL</value>
+  </data>
   <data name="ERROR_HAS_OCCURRED" xml:space="preserve">
     <value>ERROR_HAS_OCCURRED</value>
+  </data>
+  <data name="OBJECT_TYPE_SHOULD_BE_AN_INTERFACE" xml:space="preserve">
+    <value>OBJECT_TYPE_SHOULD_BE_AN_INTERFACE</value>
   </data>
 </root>

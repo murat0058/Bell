@@ -22,13 +22,13 @@ namespace Bell.Common.Resources {
     // with the /str option, or rebuild your VS project.
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class ErrorCodes {
+    public class ErrorMessageKeys {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
-        internal ErrorCodes() {
+        internal ErrorMessageKeys() {
         }
         
         /// <summary>
@@ -38,7 +38,7 @@ namespace Bell.Common.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Bell.Common.Resources.ErrorCodes", typeof(ErrorCodes).GetTypeInfo().Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Bell.Common.Resources.ErrorMessageKeys", typeof(ErrorMessageKeys).GetTypeInfo().Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -60,11 +60,29 @@ namespace Bell.Common.Resources {
         }
         
         /// <summary>
+        ///    Looks up a localized string similar to DRYIOC_CONFIGURATION_CONTAINER_SHOULD_NOT_BE_NULL.
+        /// </summary>
+        public static string DRYIOC_CONFIGURATION_CONTAINER_SHOULD_NOT_BE_NULL {
+            get {
+                return ResourceManager.GetString("DRYIOC_CONFIGURATION_CONTAINER_SHOULD_NOT_BE_NULL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Looks up a localized string similar to ERROR_HAS_OCCURRED.
         /// </summary>
         public static string ERROR_HAS_OCCURRED {
             get {
                 return ResourceManager.GetString("ERROR_HAS_OCCURRED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to OBJECT_TYPE_SHOULD_BE_AN_INTERFACE.
+        /// </summary>
+        public static string OBJECT_TYPE_SHOULD_BE_AN_INTERFACE {
+            get {
+                return ResourceManager.GetString("OBJECT_TYPE_SHOULD_BE_AN_INTERFACE", resourceCulture);
             }
         }
     }
