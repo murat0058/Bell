@@ -7,44 +7,43 @@ namespace Bell.Common.Logging
         /// <summary>
         /// Gets or sets the name of the application that created this log event
         /// </summary>
-        string ApplicationName { get; set; }
+        public string ApplicationName { get; set; }
 
         /// <summary>
         /// Gets or sets the machine name that triggered the log event
         /// </summary>
-        string MachineName { get; set; }
+        public string MachineName { get; set; }
 
         /// <summary>
         /// Gets or sets the process id associated with the log event
         /// </summary>
-        int ProcessId { get; set; }
+        public int ProcessId { get; set; }
 
         /// <summary>
         /// Gets or sets the user id associated with the log event
         /// </summary>
-        int? UserId { get; set; }
+        public int? UserId { get; set; }
 
         /// <summary>
         /// Gets or sets the message template associated with the log event
         /// </summary>
-        string MessageTemplate { get; set; }
+        public string MessageTemplate { get; set; }
 
         /// <summary>
         /// Gets or sets the message associated with the log event
         /// </summary>
-        string Message { get; set; }
+        public string Message { get; set; }
 
         /// <summary>
         /// Gets or sets any exception messages associated with the log event
         /// </summary>
-        string Exception { get; set; }
+        public string Exception { get; set; }
 
         /// <summary>
         /// Gets or sets the severity of the log event
         /// </summary>
-        LogLevel Level { get; set; }
+        public LogLevel Level { get; set; }
     }
-
 
     /// <summary>
     /// Represents a single log event
