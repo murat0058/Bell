@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Bell.Json
+namespace Bell.Common.Json
 {
     public static class JsonObjectConverter
     {

@@ -5,11 +5,8 @@
     /// </summary>
     public enum LogLevel
     {
-        // Unspecified log level
-        None, 
-
         // Tracing information and debugging minutiae; generally only switched on in unusual situations
-        Verbose,
+        Verbose = 0,
 
         // Internal control flow and diagnostic state dumps to facilitate pinpointing of recognised problems
         Debug,

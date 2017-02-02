@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Reflection;
 using System.Threading.Tasks;
 using Bell.Dapper.Mappers;
@@ -175,11 +176,15 @@ namespace Bell.Dapper.Extensions
         }
 
         /// <summary>
-        /// Executes an insert query for the specified entity.
+        /// Executes an insert query for the specified entities.
         /// </summary>
-        public static async Task InsertAsync<T>(this IDbConnection connection, IEnumerable<T> entities, IDbTransaction transaction = null, int? commandTimeout = null) where T : class
+        public static async Task BatchInsertAsync<T>(this IDbConnection connection, IList<T> entities, IDbTransaction transaction = null, int? commandTimeout = null) where T : class
         {
-            await Instance.InsertAsync<T>(connection, entities, transaction, commandTimeout);
+            var sqlConnection = connection as SqlConnection;
+
+            if (sqlConnection == null) throw new ArgumentNullException();
+
+            await Instance.BatchInsertAsync<T>(sqlConnection, entities, transaction as SqlTransaction, commandTimeout);
         }
 
         /// <summary>

@@ -6,7 +6,7 @@ using Bell.Common.Exceptions;
 using Bell.Common.Resources;
 using System.Reflection;
 
-namespace Bell.Json
+namespace Bell.Common.Json
 {
     /// <summary>
     /// Creates concrete objects for the interfaces specified
@@ -32,8 +32,7 @@ namespace Bell.Json
                 throw new BellCommonException(ErrorMessageKeys.OBJECT_TYPE_SHOULD_BE_AN_INTERFACE);
             }
 
-            var resolvedObject = DryIocConfiguration.Container.Resolve<TObjectType>();
-            return resolvedObject as TObjectType;
+            return DryIocConfiguration.Container.Resolve<TObjectType>();
         }
     }
 }

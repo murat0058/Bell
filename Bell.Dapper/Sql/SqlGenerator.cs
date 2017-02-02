@@ -142,8 +142,9 @@ namespace Bell.Dapper.Sql
         
         public virtual string Insert(IClassMapper classMap)
         {
-            var columns = classMap.Properties.Where(p => !(p.Ignored || p.IsReadOnly || p.KeyType == KeyType.Identity));
-            if (!columns.Any())
+            var columns = classMap.Properties.Where(p => !(p.Ignored || p.IsReadOnly || p.KeyType == KeyType.Identity)).ToList();
+
+            if (columns.Count == 0)
             {
                 throw new ArgumentException("No columns were mapped.");
             }

@@ -17,6 +17,7 @@ namespace Bell.Common.DryIoc
         {
             builder.Register<ILog, Log>();
             builder.Register<ILanguageTranslator, LanguageTranslator>();
+            builder.Register<ILogEventRequest, LogEvent>();
         }
     }
 }

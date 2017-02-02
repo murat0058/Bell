@@ -7,7 +7,11 @@ using Bell.Dapper.Mappers;
 using Bell.Dapper.Sql;
 using Bell.Dapper.Predicates;
 using System;
+using System.Data.Common;
 using System.Dynamic;
+using System.Data.SqlClient;
+using System.Runtime.InteropServices.ComTypes;
+using FastMember;
 
 namespace Bell.Dapper.Extensions
 {
@@ -41,8 +45,7 @@ namespace Bell.Dapper.Extensions
         /// The asynchronous counterpart of <see cref="IDapperImplementor.Insert{T}"/>
         /// </summary>
         /// <returns></returns>
-        Task InsertAsync<T>(IDbConnection connection, IEnumerable<T> entities, IDbTransaction transaction,
-            int? commandTimeout) where T : class;
+        Task BatchInsertAsync<T>(SqlConnection connection, IList<T> entities, SqlTransaction transaction, int? commandTimeout) where T : class;
 
         /// <summary>
         /// The asynchronous counterpart of <see cref="IDapperImplementor.Insert{T}"/>
@@ -126,31 +129,34 @@ namespace Bell.Dapper.Extensions
             return (int)(await connection.QueryAsync(sql, dynamicParameters, transaction, commandTimeout, CommandType.Text)).Single().Total;
         }
 
-        public async Task InsertAsync<T>(IDbConnection connection, IEnumerable<T> entities, IDbTransaction transaction, int? commandTimeout) where T : class
+        public async Task BatchInsertAsync<T>(SqlConnection connection, IList<T> entities, SqlTransaction transaction, int? commandTimeout) where T : class
         {
-            IClassMapper classMap = SqlGenerator.Configuration.GetMap<T>();
-            var properties = classMap.Properties.Where(p => p.KeyType != KeyType.NotAKey);
+            if (entities == null) throw new ArgumentNullException();
 
-            foreach (var e in entities)
+            IClassMapper classMap = SqlGenerator.Configuration.GetMap<T>();
+            var tableName = SqlGenerator.GetTableName(classMap);
+            var columnNames = new List<string>();
+
+            // Determine the columns that are needed for the insert
+            foreach (var p in classMap.Properties)
             {
-                foreach (var column in properties)
+                if (!(p.Ignored || p.IsReadOnly || p.KeyType == KeyType.Identity))
                 {
-                    if (column.KeyType == KeyType.Guid)
+                    columnNames.Add(p.ColumnName);
+                }
+
+                // Auto-generate the guid columns
+                if (p.KeyType == KeyType.Guid)
+                {
+                    foreach (var e in entities)
                     {
                         Guid comb = SqlGenerator.Configuration.GetNextGuid();
-                        column.PropertyInfo.SetValue(e, comb, null);
+                        p.PropertyInfo.SetValue(e, comb, null);
                     }
                 }
             }
 
-            string sql = SqlGenerator.Insert(classMap);
-
-            await connection.ExecuteAsync(sql, entities, transaction, commandTimeout, CommandType.Text);
-
-            // Do a QueryAsync instead
-            // Then get the list of ids
-            // Then group them var group = Predicates.Group(GroupOperator.Or, Predicates.Field<LogEvent>(le => le.Id == 1))
-            // Then GetList<>?
+            await DoBulkCopy(connection, entities, transaction, tableName, columnNames);
         }
 
         public async Task<dynamic> InsertAsync<T>(IDbConnection connection, T entity, IDbTransaction transaction, int? commandTimeout) where T : class
@@ -210,6 +216,26 @@ namespace Bell.Dapper.Extensions
         #endregion
 
         #region Helpers
+
+        private static async Task DoBulkCopy<T>(SqlConnection connection, IList<T> entities, SqlTransaction transaction,
+          string tableName, IList<string> columnNames)
+        {
+            using (var sqlCopy = new SqlBulkCopy(connection, SqlBulkCopyOptions.Default, transaction))
+            {
+                using (var reader = ObjectReader.Create(entities, columnNames.ToArray()))
+                {
+                    sqlCopy.BatchSize = entities.Count;
+                    sqlCopy.DestinationTableName = tableName;
+
+                    foreach (var columnName in columnNames)
+                    {
+                        sqlCopy.ColumnMappings.Add(columnName, columnName);
+                    }
+
+                    await sqlCopy.WriteToServerAsync(reader);
+                }
+            }
+        }
 
         /// <summary>
         /// The asynchronous counterpart to <see cref="IDapperImplementor.GetList{T}"/>.
