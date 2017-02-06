@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Bell.Common.Exceptions;
+using Bell.Common.Resources;
 
 namespace Bell.Common.Extensions
 {
@@ -17,6 +18,21 @@ namespace Bell.Common.Extensions
             if (!collection.Any())
             {
                 throw new CollectionEmptyException();
+            }
+        }
+
+        public static void ThrowUserErrorIfNullOrEmpty<T>(this IEnumerable<T> collection, Type type)
+        {
+            var typeName = $"{type.Name.Replace("`1", "")}<{type.GenericTypeArguments[0].Name}>";
+
+            if (collection == null)
+            {
+                throw new UserReportableException(ErrorMessageKeys.ERROR_NULL_VALUE, typeName);
+            }
+
+            if (!collection.Any())
+            {
+                throw new UserReportableException(ErrorMessageKeys.ERROR_EMPTY_COLLECTION, typeName);
             }
         }
     }

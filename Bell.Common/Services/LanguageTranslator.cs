@@ -2,8 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Bell.Common.Models;
 
-namespace Bell.Common.Localization
+namespace Bell.Common.Services
 {
     public interface ILanguageTranslator
     {

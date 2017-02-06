@@ -220,11 +220,11 @@ namespace Bell.Dapper.Extensions
         private static async Task DoBulkCopy<T>(SqlConnection connection, IList<T> entities, SqlTransaction transaction,
           string tableName, IList<string> columnNames)
         {
-            using (var sqlCopy = new SqlBulkCopy(connection, SqlBulkCopyOptions.Default, transaction))
+            using (var sqlCopy = new SqlBulkCopy(connection, SqlBulkCopyOptions.CheckConstraints, transaction))
             {
                 using (var reader = ObjectReader.Create(entities, columnNames.ToArray()))
                 {
-                    sqlCopy.BatchSize = entities.Count;
+                    sqlCopy.BatchSize = 5000;
                     sqlCopy.DestinationTableName = tableName;
 
                     foreach (var columnName in columnNames)

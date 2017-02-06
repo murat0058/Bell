@@ -1,10 +1,7 @@
-﻿using Newtonsoft.Json;
-using System;
-using Bell.Common.Json;
+﻿using System;
 
-namespace Bell.Common.Logging
+namespace Bell.Common.Models
 {
-    [JsonConverter(typeof(JsonInterfaceResolver<ILogEventRequest>))]
     public interface ILogEventRequest
     {
         /// <summary>

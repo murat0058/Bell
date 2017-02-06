@@ -3,6 +3,7 @@
 
   "dependencies": {
     "DryIoc.Microsoft.DependencyInjection": "1.0.2",
+    "FluentValidation.AspNetCore": "6.4.0-rc3", 
     "Microsoft.Extensions.Caching.Abstractions": "1.1.0",
     "Microsoft.Extensions.Caching.Memory": "1.1.0",
     "NETStandard.Library": "1.6.1",

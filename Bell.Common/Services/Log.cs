@@ -1,12 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using MongoDB.Driver;
 using Serilog;
-using Serilog.Events;
 using System;
-using System.Security.Authentication;
 
-namespace Bell.Common.Logging
+namespace Bell.Common.Services
 {
     /// <summary>
     /// The logging system

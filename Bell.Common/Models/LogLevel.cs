@@ -1,4 +1,4 @@
-﻿namespace Bell.Common.Logging
+﻿namespace Bell.Common.Models
 {
     /// <summary>
     /// Represents the importance of the log message

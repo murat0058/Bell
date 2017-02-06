@@ -1,13 +1,13 @@
-﻿using Bell.Common.Localization;
-using Bell.Common.Logging;
-using Bell.Common.Resources;
+﻿using Bell.Common.Resources;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using System;
 using System.Net;
 using System.Threading.Tasks;
+using Bell.Common.Exceptions;
+using Bell.Common.Services;
 
-namespace Bell.Common.Exceptions
+namespace Bell.WebApi.Exceptions
 {
     public class ErrorHandlingMiddleware
     {
@@ -56,10 +56,11 @@ namespace Bell.Common.Exceptions
         private async Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
             var code = HttpStatusCode.InternalServerError;
-            UserReportableException userReportableException;
 
             if (exception != null)
             {
+                UserReportableException userReportableException;
+
                 if (exception is UserReportableException)
                 {
                     code = HttpStatusCode.BadRequest;
@@ -77,14 +78,27 @@ namespace Bell.Common.Exceptions
             }
         }
 
-        private async Task WriteExceptionAsync(HttpContext context, HttpStatusCode code, UserReportableException exception)
+        private async Task WriteExceptionAsync(HttpContext context, HttpStatusCode code,
+            UserReportableException exception)
         {
             var response = context.Response;
             response.ContentType = "application/json";
-            response.StatusCode = (int)code;
+            response.StatusCode = (int) code;
 
-            // TODO: GET THE LANGUAGE ID HERE  
-            var errorMessage = await _translator.TranslateAsync("en-US", exception.ErrorMessage.Key, exception.ErrorMessage.Arguments);
+            string errorMessage;
+
+            try
+            {
+                // TODO: GET THE LANGUAGE ID HERE  
+                errorMessage =
+                    await _translator.TranslateAsync("en-US", exception.ErrorMessage.Key, exception.ErrorMessage.Arguments);
+            }
+            catch (Exception e)
+            {
+                exception = new UserReportableException(e,
+                    new UserReportableMessage(ErrorMessageKeys.ERROR_HAS_OCCURRED));
+                errorMessage = "An error has occurred.  The error message could not be translated.";
+            }
 
             var exceptionMessage = exception.Message;
             var stackTrace = exception.StackTrace;

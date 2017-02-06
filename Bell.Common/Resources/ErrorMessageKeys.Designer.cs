@@ -69,11 +69,29 @@ namespace Bell.Common.Resources {
         }
         
         /// <summary>
+        ///    Looks up a localized string similar to ERROR_EMPTY_COLLECTION.
+        /// </summary>
+        public static string ERROR_EMPTY_COLLECTION {
+            get {
+                return ResourceManager.GetString("ERROR_EMPTY_COLLECTION", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Looks up a localized string similar to ERROR_HAS_OCCURRED.
         /// </summary>
         public static string ERROR_HAS_OCCURRED {
             get {
                 return ResourceManager.GetString("ERROR_HAS_OCCURRED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to ERROR_NULL_VALUE.
+        /// </summary>
+        public static string ERROR_NULL_VALUE {
+            get {
+                return ResourceManager.GetString("ERROR_NULL_VALUE", resourceCulture);
             }
         }
         
