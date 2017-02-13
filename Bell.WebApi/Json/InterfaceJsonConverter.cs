@@ -59,8 +59,8 @@ namespace Bell.WebApi.Json
                 throw new ArgumentNullException();
             }
 
-            serializer.Populate(reader, value);
-
+           serializer.Populate(reader, value);
+           
             return value;
         }
 

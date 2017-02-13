@@ -103,5 +103,185 @@ namespace Bell.Common.Resources {
                 return ResourceManager.GetString("OBJECT_TYPE_SHOULD_BE_AN_INTERFACE", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to VALIDATION_ERROR_DATETIME.
+        /// </summary>
+        public static string VALIDATION_ERROR_DATETIME {
+            get {
+                return ResourceManager.GetString("VALIDATION_ERROR_DATETIME", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to VALIDATION_ERROR_EMAIL.
+        /// </summary>
+        public static string VALIDATION_ERROR_EMAIL {
+            get {
+                return ResourceManager.GetString("VALIDATION_ERROR_EMAIL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to VALIDATION_ERROR_EMPTY.
+        /// </summary>
+        public static string VALIDATION_ERROR_EMPTY {
+            get {
+                return ResourceManager.GetString("VALIDATION_ERROR_EMPTY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to VALIDATION_ERROR_ENUMERATION.
+        /// </summary>
+        public static string VALIDATION_ERROR_ENUMERATION {
+            get {
+                return ResourceManager.GetString("VALIDATION_ERROR_ENUMERATION", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to VALIDATION_ERROR_EQUAL.
+        /// </summary>
+        public static string VALIDATION_ERROR_EQUAL {
+            get {
+                return ResourceManager.GetString("VALIDATION_ERROR_EQUAL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to VALIDATION_ERROR_EXACT_LENGTH.
+        /// </summary>
+        public static string VALIDATION_ERROR_EXACT_LENGTH {
+            get {
+                return ResourceManager.GetString("VALIDATION_ERROR_EXACT_LENGTH", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to VALIDATION_ERROR_EXCLUSIVE_BETWEEEN.
+        /// </summary>
+        public static string VALIDATION_ERROR_EXCLUSIVE_BETWEEEN {
+            get {
+                return ResourceManager.GetString("VALIDATION_ERROR_EXCLUSIVE_BETWEEEN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to VALIDATION_ERROR_GREATER_THAN.
+        /// </summary>
+        public static string VALIDATION_ERROR_GREATER_THAN {
+            get {
+                return ResourceManager.GetString("VALIDATION_ERROR_GREATER_THAN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to VALIDATION_ERROR_GREATER_THAN_OR_EQUAL.
+        /// </summary>
+        public static string VALIDATION_ERROR_GREATER_THAN_OR_EQUAL {
+            get {
+                return ResourceManager.GetString("VALIDATION_ERROR_GREATER_THAN_OR_EQUAL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to VALIDATION_ERROR_INCLUSIVE_BETWEEN.
+        /// </summary>
+        public static string VALIDATION_ERROR_INCLUSIVE_BETWEEN {
+            get {
+                return ResourceManager.GetString("VALIDATION_ERROR_INCLUSIVE_BETWEEN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to VALIDATION_ERROR_LENGTH.
+        /// </summary>
+        public static string VALIDATION_ERROR_LENGTH {
+            get {
+                return ResourceManager.GetString("VALIDATION_ERROR_LENGTH", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to VALIDATION_ERROR_LESS_THAN.
+        /// </summary>
+        public static string VALIDATION_ERROR_LESS_THAN {
+            get {
+                return ResourceManager.GetString("VALIDATION_ERROR_LESS_THAN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to VALIDATION_ERROR_LESS_THAN_OR_EQUAL.
+        /// </summary>
+        public static string VALIDATION_ERROR_LESS_THAN_OR_EQUAL {
+            get {
+                return ResourceManager.GetString("VALIDATION_ERROR_LESS_THAN_OR_EQUAL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to VALIDATION_ERROR_NOT_EMPTY.
+        /// </summary>
+        public static string VALIDATION_ERROR_NOT_EMPTY {
+            get {
+                return ResourceManager.GetString("VALIDATION_ERROR_NOT_EMPTY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to VALIDATION_ERROR_NOT_EQUAL.
+        /// </summary>
+        public static string VALIDATION_ERROR_NOT_EQUAL {
+            get {
+                return ResourceManager.GetString("VALIDATION_ERROR_NOT_EQUAL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to VALIDATION_ERROR_NOT_NULL.
+        /// </summary>
+        public static string VALIDATION_ERROR_NOT_NULL {
+            get {
+                return ResourceManager.GetString("VALIDATION_ERROR_NOT_NULL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to VALIDATION_ERROR_NULL.
+        /// </summary>
+        public static string VALIDATION_ERROR_NULL {
+            get {
+                return ResourceManager.GetString("VALIDATION_ERROR_NULL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to VALIDATION_ERROR_PREDICATE.
+        /// </summary>
+        public static string VALIDATION_ERROR_PREDICATE {
+            get {
+                return ResourceManager.GetString("VALIDATION_ERROR_PREDICATE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to VALIDATION_ERROR_REGEX.
+        /// </summary>
+        public static string VALIDATION_ERROR_REGEX {
+            get {
+                return ResourceManager.GetString("VALIDATION_ERROR_REGEX", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to VALIDATION_ERRORS.
+        /// </summary>
+        public static string VALIDATION_ERRORS {
+            get {
+                return ResourceManager.GetString("VALIDATION_ERRORS", resourceCulture);
+            }
+        }
     }
 }

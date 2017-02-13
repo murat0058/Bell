@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Bell.Common.Exceptions
 {
@@ -31,9 +32,18 @@ namespace Bell.Common.Exceptions
         /// Instantiates a user reportable exception
         /// </summary>
         /// <param name="errorMessage">The error message for the exception</param>
-        public UserReportableException(UserReportableMessage errorMessage): base()
+        public UserReportableException(UserReportableMessage errorMessage)
         {
-            ErrorMessage = errorMessage;
+            ErrorMessages = new List<UserReportableMessage> {errorMessage };
+        }
+
+        /// <summary>
+        /// Instantiates a user reportable exception
+        /// </summary>
+        /// <param name="errorMessages">A collection of error messages associated with the exception</param>
+        public UserReportableException(IList<UserReportableMessage> errorMessages)
+        {
+            ErrorMessages = errorMessages;
         }
 
         /// <summary>
@@ -43,7 +53,7 @@ namespace Bell.Common.Exceptions
         /// <param name="exception">The inner exception</param>
         public UserReportableException(Exception exception, UserReportableMessage errorMessage) : base(errorMessage.Key, exception)
         {
-            ErrorMessage = errorMessage;
+            ErrorMessages = new List<UserReportableMessage> { errorMessage };
         }
 
         #endregion
@@ -53,7 +63,7 @@ namespace Bell.Common.Exceptions
         /// <summary>
         /// Gets the error code for the error message associated with this 
         /// </summary>
-        public UserReportableMessage ErrorMessage { get; private set; }
+        public IList<UserReportableMessage> ErrorMessages { get; protected set; }
 
         #endregion
     }

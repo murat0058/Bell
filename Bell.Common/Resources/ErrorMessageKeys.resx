@@ -132,4 +132,64 @@
   <data name="OBJECT_TYPE_SHOULD_BE_AN_INTERFACE" xml:space="preserve">
     <value>OBJECT_TYPE_SHOULD_BE_AN_INTERFACE</value>
   </data>
+  <data name="VALIDATION_ERRORS" xml:space="preserve">
+    <value>VALIDATION_ERRORS</value>
+  </data>
+  <data name="VALIDATION_ERROR_DATETIME" xml:space="preserve">
+    <value>VALIDATION_ERROR_DATETIME</value>
+  </data>
+  <data name="VALIDATION_ERROR_EMAIL" xml:space="preserve">
+    <value>VALIDATION_ERROR_EMAIL</value>
+  </data>
+  <data name="VALIDATION_ERROR_EMPTY" xml:space="preserve">
+    <value>VALIDATION_ERROR_EMPTY</value>
+  </data>
+  <data name="VALIDATION_ERROR_ENUMERATION" xml:space="preserve">
+    <value>VALIDATION_ERROR_ENUMERATION</value>
+  </data>
+  <data name="VALIDATION_ERROR_EQUAL" xml:space="preserve">
+    <value>VALIDATION_ERROR_EQUAL</value>
+  </data>
+  <data name="VALIDATION_ERROR_EXACT_LENGTH" xml:space="preserve">
+    <value>VALIDATION_ERROR_EXACT_LENGTH</value>
+  </data>
+  <data name="VALIDATION_ERROR_EXCLUSIVE_BETWEEEN" xml:space="preserve">
+    <value>VALIDATION_ERROR_EXCLUSIVE_BETWEEEN</value>
+  </data>
+  <data name="VALIDATION_ERROR_GREATER_THAN" xml:space="preserve">
+    <value>VALIDATION_ERROR_GREATER_THAN</value>
+  </data>
+  <data name="VALIDATION_ERROR_GREATER_THAN_OR_EQUAL" xml:space="preserve">
+    <value>VALIDATION_ERROR_GREATER_THAN_OR_EQUAL</value>
+  </data>
+  <data name="VALIDATION_ERROR_INCLUSIVE_BETWEEN" xml:space="preserve">
+    <value>VALIDATION_ERROR_INCLUSIVE_BETWEEN</value>
+  </data>
+  <data name="VALIDATION_ERROR_LENGTH" xml:space="preserve">
+    <value>VALIDATION_ERROR_LENGTH</value>
+  </data>
+  <data name="VALIDATION_ERROR_LESS_THAN" xml:space="preserve">
+    <value>VALIDATION_ERROR_LESS_THAN</value>
+  </data>
+  <data name="VALIDATION_ERROR_LESS_THAN_OR_EQUAL" xml:space="preserve">
+    <value>VALIDATION_ERROR_LESS_THAN_OR_EQUAL</value>
+  </data>
+  <data name="VALIDATION_ERROR_NOT_EMPTY" xml:space="preserve">
+    <value>VALIDATION_ERROR_NOT_EMPTY</value>
+  </data>
+  <data name="VALIDATION_ERROR_NOT_EQUAL" xml:space="preserve">
+    <value>VALIDATION_ERROR_NOT_EQUAL</value>
+  </data>
+  <data name="VALIDATION_ERROR_NOT_NULL" xml:space="preserve">
+    <value>VALIDATION_ERROR_NOT_NULL</value>
+  </data>
+  <data name="VALIDATION_ERROR_NULL" xml:space="preserve">
+    <value>VALIDATION_ERROR_NULL</value>
+  </data>
+  <data name="VALIDATION_ERROR_PREDICATE" xml:space="preserve">
+    <value>VALIDATION_ERROR_PREDICATE</value>
+  </data>
+  <data name="VALIDATION_ERROR_REGEX" xml:space="preserve">
+    <value>VALIDATION_ERROR_REGEX</value>
+  </data>
 </root>

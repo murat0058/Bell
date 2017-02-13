@@ -2,10 +2,13 @@
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using System.Dynamic;
 using System.Net;
 using System.Threading.Tasks;
 using Bell.Common.Exceptions;
 using Bell.Common.Services;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Bell.WebApi.Exceptions
 {
@@ -43,7 +46,7 @@ namespace Bell.WebApi.Exceptions
             {
                 await _next(context);
             }
-            catch (Exception ex)
+            catch (Exception ex) 
             {
                 await HandleExceptionAsync(context, ex);
             }
@@ -60,11 +63,12 @@ namespace Bell.WebApi.Exceptions
             if (exception != null)
             {
                 UserReportableException userReportableException;
+                var reportableException = exception as UserReportableException;
 
-                if (exception is UserReportableException)
+                if (reportableException != null)
                 {
                     code = HttpStatusCode.BadRequest;
-                    userReportableException = (UserReportableException)exception;
+                    userReportableException = reportableException;
                 }
                 else
                 {
@@ -78,48 +82,62 @@ namespace Bell.WebApi.Exceptions
             }
         }
 
-        private async Task WriteExceptionAsync(HttpContext context, HttpStatusCode code,
-            UserReportableException exception)
+        private async Task WriteExceptionAsync(HttpContext context, HttpStatusCode code, UserReportableException exception)
         {
             var response = context.Response;
             response.ContentType = "application/json";
             response.StatusCode = (int) code;
 
-            string errorMessage;
+            var error = await GenerateErrorAsync(exception);
+
+            await response.WriteAsync(JsonConvert.SerializeObject(new { error }));
+        }
+
+        public async Task<dynamic> GenerateErrorAsync(UserReportableException exception)
+        {
+            dynamic error = new ExpandoObject();
 
             try
             {
-                // TODO: GET THE LANGUAGE ID HERE  
-                errorMessage =
-                    await _translator.TranslateAsync("en-US", exception.ErrorMessage.Key, exception.ErrorMessage.Arguments);
+                var errorMessages = await GenerateErrorMessagesAsync(exception);
+
+                error.code = exception.ErrorMessages[0].Key;
+                error.messages = errorMessages;
+                error.details = exception.Message;
+                error.stackTrace = exception.StackTrace;
+
+                if (string.IsNullOrWhiteSpace(exception.Message) &&
+                    string.IsNullOrWhiteSpace(exception.StackTrace) &&
+                    exception.InnerException != null)
+                {
+                    error.details = exception.InnerException.Message;
+                    error.stackTrace = exception.InnerException.StackTrace;
+                }
+
+
             }
             catch (Exception e)
             {
-                exception = new UserReportableException(e,
-                    new UserReportableMessage(ErrorMessageKeys.ERROR_HAS_OCCURRED));
-                errorMessage = "An error has occurred.  The error message could not be translated.";
+                error.code = ErrorMessageKeys.ERROR_HAS_OCCURRED;
+                error.messages = new List<string> {"An error has occurred.  The error message could not be translated."};
+                error.details = e.Message;
+                error.stackTrace = e.StackTrace;
             }
 
-            var exceptionMessage = exception.Message;
-            var stackTrace = exception.StackTrace;
+            return error;
+        }
 
-            if (exception.ErrorMessage.Key == ErrorMessageKeys.ERROR_HAS_OCCURRED &&
-                exception.InnerException != null)
+        public async Task<List<string>> GenerateErrorMessagesAsync(UserReportableException exception)
+        {
+            var errorMessages = new List<string>();
+
+            // TODO: GET THE LANGUAGE ID HERE  
+            foreach (var errorMessage in exception.ErrorMessages)
             {
-                exceptionMessage = exception.InnerException.Message;
-                stackTrace = exception.InnerException.StackTrace;
+                errorMessages.Add(await _translator.TranslateAsync("en-US", errorMessage.Key, errorMessage.Arguments));
             }
 
-            await response.WriteAsync(JsonConvert.SerializeObject(new
-            {
-                error = new
-                {
-                    code = exception.ErrorMessage.Key,
-                    message = errorMessage,
-                    exception = exceptionMessage,
-                    stackTrace = stackTrace
-                }
-            }));
+            return errorMessages;
         }
 
         #endregion
