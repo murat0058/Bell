@@ -1,8 +1,8 @@
 ﻿using Bell.Common.Resources;
 
-namespace Bell.Common.Services
+namespace Bell.Common.Validation
 {
-    public class ValidationMessageProvider
+    public static class ValidationMessageProvider
     {
         public static string email_error
         {

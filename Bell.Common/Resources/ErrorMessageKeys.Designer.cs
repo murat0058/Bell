@@ -87,6 +87,15 @@ namespace Bell.Common.Resources {
         }
         
         /// <summary>
+        ///    Looks up a localized string similar to ERROR_LOGGING.
+        /// </summary>
+        public static string ERROR_LOGGING {
+            get {
+                return ResourceManager.GetString("ERROR_LOGGING", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Looks up a localized string similar to ERROR_NULL_VALUE.
         /// </summary>
         public static string ERROR_NULL_VALUE {

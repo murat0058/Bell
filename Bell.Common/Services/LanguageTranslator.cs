@@ -22,7 +22,7 @@ namespace Bell.Common.Services
     {
         #region Private Fields
 
-        private const string _memoryCacheKey = "LANGUAGE_TRANSLATION_REPOSITORY_CACHE";
+        private const string _memoryCacheKey = "LANGUAGE_TRANSLATOR_CACHE";
 
         private readonly MemoryCacheEntryOptions _cacheOptions;
         private readonly IMemoryCache _memoryCache;

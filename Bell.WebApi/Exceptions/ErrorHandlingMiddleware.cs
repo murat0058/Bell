@@ -8,7 +8,6 @@ using System.Net;
 using System.Threading.Tasks;
 using Bell.Common.Exceptions;
 using Bell.Common.Services;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Bell.WebApi.Exceptions
 {
@@ -75,7 +74,15 @@ namespace Bell.WebApi.Exceptions
                     var userReportableMessage = new UserReportableMessage(ErrorMessageKeys.ERROR_HAS_OCCURRED);
                     userReportableException = new UserReportableException(exception, userReportableMessage);
 
-                    _log.Error(exception, await _translator.TranslateAsync("en-US", userReportableMessage.Key));
+                    try
+                    {
+                        _log.Error(exception, await _translator.TranslateAsync("en-US", userReportableMessage.Key));
+                    }
+                    catch
+                    {
+                        userReportableException.ErrorMessages.Add(new UserReportableMessage(ErrorMessageKeys.ERROR_LOGGING));
+                    }
+
                 }
                 
                 await WriteExceptionAsync(context, code, userReportableException);
@@ -119,7 +126,7 @@ namespace Bell.WebApi.Exceptions
             catch (Exception e)
             {
                 error.code = ErrorMessageKeys.ERROR_HAS_OCCURRED;
-                error.messages = new List<string> {"An error has occurred.  The error message could not be translated."};
+                error.messages = new List<string> {"An error has occurred.  The error message(s) could not be translated."};
                 error.details = e.Message;
                 error.stackTrace = e.StackTrace;
             }

@@ -21,9 +21,10 @@ namespace Bell.Common.Extensions
             }
         }
 
-        public static void ThrowUserErrorIfNullOrEmpty<T>(this IEnumerable<T> collection, Type type)
+        public static void ThrowUserErrorIfNullOrEmpty<T>(this IEnumerable<T> collection)
         {
-            var typeName = $"{type.Name.Replace("`1", "")}<{type.GenericTypeArguments[0].Name}>";
+            var type = typeof(T);
+            var typeName = $"IEnumerable<{type.Name}>";
 
             if (collection == null)
             {

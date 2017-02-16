@@ -14,8 +14,10 @@ namespace Bell.Common.Extensions
             }
         }
 
-        public static void ThrowUserErrorIfNull(this object obj, Type type)
+        public static void ThrowUserErrorIfNull<T>(this T obj)
         {
+            var type = typeof(T);
+
             if (obj == null)
             {
                 throw new UserReportableException(ErrorMessageKeys.ERROR_NULL_VALUE, type.Name);

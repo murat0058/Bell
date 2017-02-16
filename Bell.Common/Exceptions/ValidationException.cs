@@ -66,7 +66,7 @@ namespace Bell.Common.Exceptions
                     }
                 }
 
-                ErrorMessages.Add(new UserReportableMessage(key, args));
+                ErrorMessages.Add(new UserReportableMessage(key, args.ToArray()));
             }
         }
 

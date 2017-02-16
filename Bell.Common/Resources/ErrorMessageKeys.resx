@@ -126,6 +126,9 @@
   <data name="ERROR_HAS_OCCURRED" xml:space="preserve">
     <value>ERROR_HAS_OCCURRED</value>
   </data>
+  <data name="ERROR_LOGGING" xml:space="preserve">
+    <value>ERROR_LOGGING</value>
+  </data>
   <data name="ERROR_NULL_VALUE" xml:space="preserve">
     <value>ERROR_NULL_VALUE</value>
   </data>

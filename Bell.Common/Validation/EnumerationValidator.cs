@@ -4,7 +4,7 @@ using Bell.Common.Resources;
 using FluentValidation;
 using FluentValidation.Validators;
 
-namespace Bell.Common.Validators
+namespace Bell.Common.Validation
 {
     public static class EnumerationValidatorExtension
     {
