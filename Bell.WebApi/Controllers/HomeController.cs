@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Bell.Common.WebApi.Controllers
+namespace Bell.WebApi.Controllers
 {
     [ApiExplorerSettings(IgnoreApi = true)]
     [Route("")]

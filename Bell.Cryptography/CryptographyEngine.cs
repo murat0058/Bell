@@ -8,7 +8,7 @@ namespace Bell.Cryptography
         #region Private Fields
 
         private const int _workFactor = 12;
-        private const int _apiKeySize = 64;
+        private const int _apiTokenByteSize = 48; 
         private const string _pepper = "N)O@eTuVBuFzpFqGGbM27KYp1x^w";
 
         #endregion
@@ -35,9 +35,16 @@ namespace Bell.Cryptography
             return BCrypt.Net.BCrypt.GenerateSalt(_workFactor);
         }
 
+        /// <summary>
+        /// Generates a random API Token
+        /// </summary>
+        /// <returns>The API token, encoded as a base 64 string</returns>
+        /// <remarks>
+        /// Token size, in characters = (Ceiling(apiTokenByteSize / 3) * 4)
+        /// </remarks>
         public static string GenerateApiToken()
         {
-            var key = new byte[_apiKeySize];
+            var key = new byte[_apiTokenByteSize];
 
             using (var generator = RandomNumberGenerator.Create())
             {
