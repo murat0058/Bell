@@ -19,6 +19,7 @@ namespace Bell.Common.DryIoc
             builder.Register<ILog, Log>();
             builder.Register<ILogEventRequest, LogEvent>();
 
+            builder.Register<IAuthenticator, Authenticator>();
             builder.Register<ILanguageTranslator, LanguageTranslator>();
             builder.Register<ILogEventWriter, LogEventWriter>();
         }

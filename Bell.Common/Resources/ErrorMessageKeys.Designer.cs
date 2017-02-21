@@ -87,6 +87,33 @@ namespace Bell.Common.Resources {
         }
         
         /// <summary>
+        ///    Looks up a localized string similar to ERROR_INVALID_ACCESS_TOKEN.
+        /// </summary>
+        public static string ERROR_INVALID_ACCESS_TOKEN {
+            get {
+                return ResourceManager.GetString("ERROR_INVALID_ACCESS_TOKEN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to ERROR_INVALID_REFRESH_TOKEN.
+        /// </summary>
+        public static string ERROR_INVALID_REFRESH_TOKEN {
+            get {
+                return ResourceManager.GetString("ERROR_INVALID_REFRESH_TOKEN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to ERROR_INVALID_USER_CREDENTIALS.
+        /// </summary>
+        public static string ERROR_INVALID_USER_CREDENTIALS {
+            get {
+                return ResourceManager.GetString("ERROR_INVALID_USER_CREDENTIALS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Looks up a localized string similar to ERROR_LOGGING.
         /// </summary>
         public static string ERROR_LOGGING {
@@ -101,6 +128,51 @@ namespace Bell.Common.Resources {
         public static string ERROR_NULL_VALUE {
             get {
                 return ResourceManager.GetString("ERROR_NULL_VALUE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to ERROR_REFRESH_TOKEN_DISABLED.
+        /// </summary>
+        public static string ERROR_REFRESH_TOKEN_DISABLED {
+            get {
+                return ResourceManager.GetString("ERROR_REFRESH_TOKEN_DISABLED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to ERROR_STRING_EMPTY.
+        /// </summary>
+        public static string ERROR_STRING_EMPTY {
+            get {
+                return ResourceManager.GetString("ERROR_STRING_EMPTY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to ERROR_STRING_NULL.
+        /// </summary>
+        public static string ERROR_STRING_NULL {
+            get {
+                return ResourceManager.GetString("ERROR_STRING_NULL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to ERROR_STRING_ONLY_WHITE_SPACE.
+        /// </summary>
+        public static string ERROR_STRING_ONLY_WHITE_SPACE {
+            get {
+                return ResourceManager.GetString("ERROR_STRING_ONLY_WHITE_SPACE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to ERROR_USER_NOT_FOUND.
+        /// </summary>
+        public static string ERROR_USER_NOT_FOUND {
+            get {
+                return ResourceManager.GetString("ERROR_USER_NOT_FOUND", resourceCulture);
             }
         }
         

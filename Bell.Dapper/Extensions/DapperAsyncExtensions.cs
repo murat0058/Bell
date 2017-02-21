@@ -195,7 +195,34 @@ namespace Bell.Dapper.Extensions
         /// </summary>
         public static async Task<dynamic> InsertAsync<T>(this IDbConnection connection, T entity, IDbTransaction transaction = null, int? commandTimeout = null) where T : class
         {
-            return await Instance.InsertAsync<T>(connection, entity, transaction, commandTimeout);
+            return await Instance.InsertAsync(connection, entity, transaction, commandTimeout);
+        }
+
+        /// <summary>
+        /// Updates the entity with the given specified information
+        /// </summary>
+        /// <returns>True if an update occurred; otherwise false</returns>
+        public static async Task<bool> UpdateAsync<T>(this IDbConnection connection, T entity,
+            IDbTransaction transaction = null, int? commandTimeout = null)
+            where T : class
+        {
+            return await Instance.UpdateAsync(connection, entity, transaction, commandTimeout);
+        }
+
+        /// <summary>
+        /// Executes a delete query for the specified entity.
+        /// </summary>
+        public static async Task<bool> DeleteAsync<T>(this IDbConnection connection, T entity, IDbTransaction transaction = null, int? commandTimeout = null) where T : class
+        {
+            return await Instance.DeleteAsync(connection, entity, transaction, commandTimeout);
+        }
+
+        /// <summary>
+        /// Executes a delete query using the specified predicate.
+        /// </summary>
+        public static async Task<bool> DeleteAsync<T>(this IDbConnection connection, object predicate, IDbTransaction transaction = null, int? commandTimeout = null) where T : class
+        {
+            return await Instance.DeleteAsync(connection, predicate, transaction, commandTimeout);
         }
     }
 }

@@ -1,18 +1,18 @@
 ﻿namespace Bell.Common.Models
 {
-    public class UserLoginResponse
+    public class UserTokenRequest
     {
         #region Public Properties
 
         /// <summary>
-        /// The user's API token
+        /// The user's e-mail address
         /// </summary>
-        public string ApiToken { get; set; }
+        public string Email { get; set; }
 
         /// <summary>
-        /// The user's information
+        /// The user's password
         /// </summary>
-        public User User { get; set; }
+        public string Password { get; set; }
 
         #endregion
     }

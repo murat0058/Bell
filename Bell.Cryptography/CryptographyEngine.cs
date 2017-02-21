@@ -42,7 +42,7 @@ namespace Bell.Cryptography
         /// <remarks>
         /// Token size, in characters = (Ceiling(apiTokenByteSize / 3) * 4)
         /// </remarks>
-        public static string GenerateApiToken()
+        public static string GenerateToken()
         {
             var key = new byte[_apiTokenByteSize];
 

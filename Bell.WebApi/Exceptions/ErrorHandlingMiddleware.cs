@@ -113,9 +113,7 @@ namespace Bell.WebApi.Exceptions
                 error.details = exception.Message;
                 error.stackTrace = exception.StackTrace;
 
-                if (string.IsNullOrWhiteSpace(exception.Message) &&
-                    string.IsNullOrWhiteSpace(exception.StackTrace) &&
-                    exception.InnerException != null)
+                if (exception.InnerException != null)
                 {
                     error.details = exception.InnerException.Message;
                     error.stackTrace = exception.InnerException.StackTrace;

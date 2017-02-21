@@ -23,12 +23,12 @@ namespace Bell.Common.Services
 
     public class LogEventWriter : ILogEventWriter
     {
-        public Task<LogEvent> CreateAsync(ILogEventRequest logEventRequest)
+        public async Task<LogEvent> CreateAsync(ILogEventRequest logEventRequest)
         {
             throw new NotImplementedException();
         }
     
-        public Task BatchCreateAsync(IList<ILogEventRequest> logEventRequests)
+        public async Task BatchCreateAsync(IList<ILogEventRequest> logEventRequests)
         {
             throw new NotImplementedException();
         }

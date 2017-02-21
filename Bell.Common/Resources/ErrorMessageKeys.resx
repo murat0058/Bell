@@ -126,11 +126,35 @@
   <data name="ERROR_HAS_OCCURRED" xml:space="preserve">
     <value>ERROR_HAS_OCCURRED</value>
   </data>
+  <data name="ERROR_INVALID_ACCESS_TOKEN" xml:space="preserve">
+    <value>ERROR_INVALID_ACCESS_TOKEN</value>
+  </data>
+  <data name="ERROR_INVALID_REFRESH_TOKEN" xml:space="preserve">
+    <value>ERROR_INVALID_REFRESH_TOKEN</value>
+  </data>
+  <data name="ERROR_INVALID_USER_CREDENTIALS" xml:space="preserve">
+    <value>ERROR_INVALID_USER_CREDENTIALS</value>
+  </data>
   <data name="ERROR_LOGGING" xml:space="preserve">
     <value>ERROR_LOGGING</value>
   </data>
   <data name="ERROR_NULL_VALUE" xml:space="preserve">
     <value>ERROR_NULL_VALUE</value>
+  </data>
+  <data name="ERROR_REFRESH_TOKEN_DISABLED" xml:space="preserve">
+    <value>ERROR_REFRESH_TOKEN_DISABLED</value>
+  </data>
+  <data name="ERROR_STRING_EMPTY" xml:space="preserve">
+    <value>ERROR_STRING_EMPTY</value>
+  </data>
+  <data name="ERROR_STRING_NULL" xml:space="preserve">
+    <value>ERROR_STRING_NULL</value>
+  </data>
+  <data name="ERROR_STRING_ONLY_WHITE_SPACE" xml:space="preserve">
+    <value>ERROR_STRING_ONLY_WHITE_SPACE</value>
+  </data>
+  <data name="ERROR_USER_NOT_FOUND" xml:space="preserve">
+    <value>ERROR_USER_NOT_FOUND</value>
   </data>
   <data name="OBJECT_TYPE_SHOULD_BE_AN_INTERFACE" xml:space="preserve">
     <value>OBJECT_TYPE_SHOULD_BE_AN_INTERFACE</value>

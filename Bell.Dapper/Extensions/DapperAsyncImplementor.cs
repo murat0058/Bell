@@ -7,10 +7,9 @@ using Bell.Dapper.Mappers;
 using Bell.Dapper.Sql;
 using Bell.Dapper.Predicates;
 using System;
-using System.Data.Common;
 using System.Dynamic;
 using System.Data.SqlClient;
-using System.Runtime.InteropServices.ComTypes;
+using Bell.Dapper.Reflection;
 using FastMember;
 
 namespace Bell.Dapper.Extensions
@@ -53,6 +52,25 @@ namespace Bell.Dapper.Extensions
         /// <returns></returns>
         Task<dynamic> InsertAsync<T>(IDbConnection connection, T entity, IDbTransaction transaction,
             int? commandTimeout) where T : class;
+
+        /// <summary>
+        /// The asynchronous counterpart of <see cref="IDapperImplementor.Update{T}" />
+        /// </summary>
+        /// <returns></returns>
+        Task<bool> UpdateAsync<T>(IDbConnection connection, T entity, IDbTransaction transaction, int? commandTimeout)
+            where T : class;
+
+        /// <summary>
+        /// The asynchronous counterpart of <see cref="IDapperImplementor.Delete{T}" />
+        /// </summary>
+        /// <returns></returns>
+        Task<bool> DeleteAsync<T>(IDbConnection connection, T entity, IDbTransaction transaction, int? commandTimeout) where T : class;
+
+        /// <summary>
+        /// The asynchronous counterpart of <see cref="IDapperImplementor.Delete{T}" />
+        /// </summary>
+        /// <returns></returns>
+        Task<bool> DeleteAsync<T>(IDbConnection connection, object predicate, IDbTransaction transaction, int? commandTimeout) where T : class;
     }
 
     public class DapperAsyncImplementor : DapperImplementor, IDapperAsyncImplementor
@@ -213,6 +231,44 @@ namespace Bell.Dapper.Extensions
             return keyValues;
         }
 
+        public async Task<bool> UpdateAsync<T>(IDbConnection connection, T entity, IDbTransaction transaction, int? commandTimeout) where T : class
+        {
+            IClassMapper classMap = SqlGenerator.Configuration.GetMap<T>();
+            IPredicate predicate = GetKeyPredicate<T>(classMap, entity);
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
+            string sql = SqlGenerator.Update(classMap, predicate, parameters);
+            DynamicParameters dynamicParameters = new DynamicParameters();
+
+            var columns = classMap.Properties.Where(p => !(p.Ignored || p.IsReadOnly || p.KeyType == KeyType.Identity));
+            foreach (var property in ReflectionHelper.GetObjectValues(entity).Where(property => columns.Any(c => c.Name == property.Key)))
+            {
+                dynamicParameters.Add(property.Key, property.Value);
+            }
+
+            foreach (var parameter in parameters)
+            {
+                dynamicParameters.Add(parameter.Key, parameter.Value);
+            }
+
+            return await connection.ExecuteAsync(sql, dynamicParameters, transaction, commandTimeout, CommandType.Text) > 0;
+        }
+
+        public async Task<bool> DeleteAsync<T>(IDbConnection connection, T entity, IDbTransaction transaction,
+            int? commandTimeout) where T : class
+        {
+            IClassMapper classMap = SqlGenerator.Configuration.GetMap<T>();
+            IPredicate predicate = GetKeyPredicate<T>(classMap, entity);
+            return await DeleteAsync<T>(connection, classMap, predicate, transaction, commandTimeout);
+        }
+
+        public async Task<bool> DeleteAsync<T>(IDbConnection connection, object predicate, IDbTransaction transaction,
+            int? commandTimeout) where T : class
+        {
+            IClassMapper classMap = SqlGenerator.Configuration.GetMap<T>();
+            IPredicate wherePredicate = GetPredicate(classMap, predicate);
+            return await DeleteAsync<T>(connection, classMap, wherePredicate, transaction, commandTimeout);
+        }
+
         #endregion
 
         #region Helpers
@@ -283,6 +339,19 @@ namespace Bell.Dapper.Extensions
             }
 
             return await connection.QueryAsync<T>(sql, dynamicParameters, transaction, commandTimeout, CommandType.Text);
+        }
+
+        protected async Task<bool> DeleteAsync<T>(IDbConnection connection, IClassMapper classMap, IPredicate predicate, IDbTransaction transaction, int? commandTimeout) where T : class
+        {
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
+            string sql = SqlGenerator.Delete(classMap, predicate, parameters);
+            DynamicParameters dynamicParameters = new DynamicParameters();
+            foreach (var parameter in parameters)
+            {
+                dynamicParameters.Add(parameter.Key, parameter.Value);
+            }
+
+            return await connection.ExecuteAsync(sql, dynamicParameters, transaction, commandTimeout, CommandType.Text) > 0;
         }
 
         #endregion

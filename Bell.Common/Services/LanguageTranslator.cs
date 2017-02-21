@@ -24,7 +24,7 @@ namespace Bell.Common.Services
 
         private const string _memoryCacheKey = "LANGUAGE_TRANSLATOR_CACHE";
 
-        private readonly MemoryCacheEntryOptions _cacheOptions;
+        private readonly MemoryCacheEntryOptions _memoryCacheOptions;
         private readonly IMemoryCache _memoryCache;
 
         #endregion
@@ -33,7 +33,7 @@ namespace Bell.Common.Services
 
         public LanguageTranslator(IMemoryCache memoryCache)
         {
-            _cacheOptions = new MemoryCacheEntryOptions { AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(1) };
+            _memoryCacheOptions = new MemoryCacheEntryOptions { AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(1) };
             _memoryCache = memoryCache;
         }
 
@@ -95,7 +95,7 @@ namespace Bell.Common.Services
             }
 
             translationsByLanguageId.Add(languageId, translationsByKey);
-            _memoryCache.Set(_memoryCacheKey, translationsByLanguageId, new MemoryCacheEntryOptions() { });
+            _memoryCache.Set(_memoryCacheKey, translationsByLanguageId, _memoryCacheOptions);
         }
 
         private IDictionary<string, LanguageTranslation> LoadFromMemory(string languageId)
