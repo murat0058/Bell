@@ -114,6 +114,15 @@ namespace Bell.Common.Resources {
         }
         
         /// <summary>
+        ///    Looks up a localized string similar to ERROR_INVALID_USER_ID.
+        /// </summary>
+        public static string ERROR_INVALID_USER_ID {
+            get {
+                return ResourceManager.GetString("ERROR_INVALID_USER_ID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Looks up a localized string similar to ERROR_LOGGING.
         /// </summary>
         public static string ERROR_LOGGING {

@@ -135,6 +135,9 @@
   <data name="ERROR_INVALID_USER_CREDENTIALS" xml:space="preserve">
     <value>ERROR_INVALID_USER_CREDENTIALS</value>
   </data>
+  <data name="ERROR_INVALID_USER_ID" xml:space="preserve">
+    <value>ERROR_INVALID_USER_ID</value>
+  </data>
   <data name="ERROR_LOGGING" xml:space="preserve">
     <value>ERROR_LOGGING</value>
   </data>

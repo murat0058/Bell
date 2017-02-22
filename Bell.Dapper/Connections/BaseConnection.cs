@@ -2,7 +2,9 @@
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
+using System.Reflection;
 using System.Threading.Tasks;
+using Bell.Dapper.Extensions;
 
 namespace Bell.Dapper.Connections
 {
@@ -21,6 +23,7 @@ namespace Bell.Dapper.Connections
         {
             ConnectionString = connectionString;
         }
+
 
         #endregion
 

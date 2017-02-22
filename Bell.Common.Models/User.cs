@@ -1,4 +1,4 @@
-﻿using Bell.Common.Extensions;
+﻿using System;
 
 namespace Bell.Common.Models
 {
@@ -46,7 +46,10 @@ namespace Bell.Common.Models
 
         public User(UserIdentifier userIdentifier)
         {
-            userIdentifier.ThrowIfNull();
+            if (userIdentifier == null)
+            {
+                throw new NullReferenceException();
+            }
 
             Id = userIdentifier.Id;
             Email = userIdentifier.Email;

@@ -222,7 +222,7 @@ namespace Bell.Dapper.Extensions
         /// </summary>
         public static async Task<bool> DeleteAsync<T>(this IDbConnection connection, object predicate, IDbTransaction transaction = null, int? commandTimeout = null) where T : class
         {
-            return await Instance.DeleteAsync(connection, predicate, transaction, commandTimeout);
+            return await Instance.DeleteAsync<T>(connection, predicate, transaction, commandTimeout);
         }
     }
 }
