@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using Bell.Common.Models;
 using Bell.Common.Services;
@@ -92,6 +93,7 @@ namespace Bell.Common.Serilog
             if (serilogLogEvent.Properties.TryGetValue(propertyName, out propertyValue))
             {
                 value = propertyValue.ToString();
+                value = value.Replace("\"", "");
             }
 
             return value;

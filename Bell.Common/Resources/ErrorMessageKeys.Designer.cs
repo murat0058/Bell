@@ -177,11 +177,29 @@ namespace Bell.Common.Resources {
         }
         
         /// <summary>
+        ///    Looks up a localized string similar to ERROR_UNAUTHORIZED.
+        /// </summary>
+        public static string ERROR_UNAUTHORIZED {
+            get {
+                return ResourceManager.GetString("ERROR_UNAUTHORIZED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Looks up a localized string similar to ERROR_USER_NOT_FOUND.
         /// </summary>
         public static string ERROR_USER_NOT_FOUND {
             get {
                 return ResourceManager.GetString("ERROR_USER_NOT_FOUND", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to ERROR_VALUE_MUST_BE_POSITIVE.
+        /// </summary>
+        public static string ERROR_VALUE_MUST_BE_POSITIVE {
+            get {
+                return ResourceManager.GetString("ERROR_VALUE_MUST_BE_POSITIVE", resourceCulture);
             }
         }
         

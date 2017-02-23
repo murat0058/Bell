@@ -156,8 +156,14 @@
   <data name="ERROR_STRING_ONLY_WHITE_SPACE" xml:space="preserve">
     <value>ERROR_STRING_ONLY_WHITE_SPACE</value>
   </data>
+  <data name="ERROR_UNAUTHORIZED" xml:space="preserve">
+    <value>ERROR_UNAUTHORIZED</value>
+  </data>
   <data name="ERROR_USER_NOT_FOUND" xml:space="preserve">
     <value>ERROR_USER_NOT_FOUND</value>
+  </data>
+  <data name="ERROR_VALUE_MUST_BE_POSITIVE" xml:space="preserve">
+    <value>ERROR_VALUE_MUST_BE_POSITIVE</value>
   </data>
   <data name="OBJECT_TYPE_SHOULD_BE_AN_INTERFACE" xml:space="preserve">
     <value>OBJECT_TYPE_SHOULD_BE_AN_INTERFACE</value>

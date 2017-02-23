@@ -9,6 +9,11 @@ namespace Bell.Common.Services
     public interface ILanguageTranslator
     {
         /// <summary>
+        /// The default language id
+        /// </summary>
+        string DefaultLanguageId { get; }
+
+        /// <summary>
         /// Translates the key into the languaged specified by the id
         /// </summary>
         /// <param name="languageId">The language id (e.g. "en" or "en-US")</param>
@@ -16,6 +21,12 @@ namespace Bell.Common.Services
         /// <param name="arguments">The arguments associated with the translation string</param>
         /// <returns>The translated string</returns>
         Task<string> TranslateAsync(string languageId, string key, params object[] arguments);
+
+        /// <summary>
+        /// Finds the supported languages
+        /// </summary>
+        /// <returns>A list of supported language ids (e.g. "en" or "en-US")</returns>
+        Task<IEnumerable<string>> FindSupportedLanguagesAsync();
     }
 
     public class LanguageTranslator : ILanguageTranslator
@@ -39,6 +50,12 @@ namespace Bell.Common.Services
 
         #endregion
 
+        #region Public Properties
+
+        public string DefaultLanguageId { get { return "en-US"; } }
+
+        #endregion
+
         #region Public Methods
 
         public async Task<string> TranslateAsync(string languageId, string key, params object[] arguments)
@@ -53,6 +70,11 @@ namespace Bell.Common.Services
             }
 
             return arguments == null ? translation.Value : string.Format(translation.Value, arguments);
+        }
+
+        public async Task<IEnumerable<string>> FindSupportedLanguagesAsync()
+        {
+            throw new NotImplementedException();
         }
 
         #endregion
@@ -110,6 +132,7 @@ namespace Bell.Common.Services
 
             return translationsByKey;
         }
+
 
         #endregion
     }
