@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Bell.Common.Resources;
@@ -51,7 +52,7 @@ namespace Bell.WebApi.Filters
             var unauthorizedResult = new JsonResult(new
             {
                 code = ErrorMessageKeys.ERROR_UNAUTHORIZED,
-                message = await _translator.TranslateAsync(languageId, ErrorMessageKeys.ERROR_UNAUTHORIZED)
+                messages = new List<string> { await _translator.TranslateAsync(languageId, ErrorMessageKeys.ERROR_UNAUTHORIZED) }
             });
 
             unauthorizedResult.StatusCode = (int)HttpStatusCode.Unauthorized;
