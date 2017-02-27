@@ -87,15 +87,6 @@ namespace Bell.Common.Resources {
         }
         
         /// <summary>
-        ///    Looks up a localized string similar to ERROR_INVALID_ACCESS_TOKEN.
-        /// </summary>
-        public static string ERROR_INVALID_ACCESS_TOKEN {
-            get {
-                return ResourceManager.GetString("ERROR_INVALID_ACCESS_TOKEN", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///    Looks up a localized string similar to ERROR_INVALID_REFRESH_TOKEN.
         /// </summary>
         public static string ERROR_INVALID_REFRESH_TOKEN {

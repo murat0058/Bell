@@ -1,4 +1,4 @@
-﻿namespace Bell.Common.Models
+﻿namespace Bell.Common.Models.Localization
 {
     /// <summary>
     /// Represents a language translation

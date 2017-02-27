@@ -1,5 +1,5 @@
 ﻿using DryIoc;
-using Bell.Common.Models;
+using Bell.Common.Models.Logging;
 using Bell.Common.Services;
 
 namespace Bell.Common.DryIoc

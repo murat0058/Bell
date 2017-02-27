@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
-using Bell.Common.Models;
+using Bell.Common.Models.Logging;
 using Bell.Common.Services;
 using Serilog.Events;
 using Serilog.Sinks.PeriodicBatching;
-using LogEvent = Bell.Common.Models.LogEvent;
+using LogEvent = Bell.Common.Models.Logging.LogEvent;
 using SerilogLogEvent = Serilog.Events.LogEvent;
 using SerilogLogEventLevel = Serilog.Events.LogEventLevel;
 

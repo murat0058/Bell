@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Bell.Common.Models;
+using Bell.Common.Models.Localization;
 
 namespace Bell.Common.Services
 {

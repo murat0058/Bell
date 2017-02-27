@@ -1,7 +1,10 @@
 ﻿using System;
 
-namespace Bell.Common.Models
+namespace Bell.Common.Models.Logging
 {
+    /// <summary>
+    /// Represents a log event request
+    /// </summary>
     public interface ILogEventRequest
     {
         /// <summary>

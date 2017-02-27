@@ -126,9 +126,6 @@
   <data name="ERROR_HAS_OCCURRED" xml:space="preserve">
     <value>ERROR_HAS_OCCURRED</value>
   </data>
-  <data name="ERROR_INVALID_ACCESS_TOKEN" xml:space="preserve">
-    <value>ERROR_INVALID_ACCESS_TOKEN</value>
-  </data>
   <data name="ERROR_INVALID_REFRESH_TOKEN" xml:space="preserve">
     <value>ERROR_INVALID_REFRESH_TOKEN</value>
   </data>

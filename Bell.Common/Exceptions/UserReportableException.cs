@@ -65,6 +65,11 @@ namespace Bell.Common.Exceptions
         /// </summary>
         public IList<UserReportableMessage> ErrorMessages { get; protected set; }
 
+        /// <summary>
+        /// Gets the primary error message key
+        /// </summary>
+        public string PrimaryErrorMessageKey { get { return ErrorMessages[0].Key; } }
+
         #endregion
     }
 }

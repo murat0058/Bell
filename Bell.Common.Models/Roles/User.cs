@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Bell.Common.Models
+namespace Bell.Common.Models.Roles
 {
     /// <summary>
     /// Represents the user's identification information
@@ -39,11 +39,17 @@ namespace Bell.Common.Models
     {
         #region Constructors
 
+        /// <summary>
+        /// Cretes a new instance of a user
+        /// </summary>
         public User()
         {
             
         }
 
+        /// <summary>
+        /// Creates a new instance of a user
+        /// </summary>
         public User(UserIdentifier userIdentifier)
         {
             if (userIdentifier == null)

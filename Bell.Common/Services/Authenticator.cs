@@ -1,22 +1,22 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Bell.Common.Models;
+using Bell.Common.Models.Security;
 
 namespace Bell.Common.Services
 {
     public interface IAuthenticator
     {
         /// <summary>
-        /// Verifies the acces token and finds the user associated with the access token or throws an error if the token has expired
+        /// Checks to see if the user access token is valid
         /// </summary>
-        /// <param name="accessToken">The access token</param>
-        /// <returns>The user's information</returns>
-        Task<User> VerifyAccessToken(string accessToken);
+        /// <param name="request">The access token request</param>
+        /// <returns>The verify access token response</returns>
+        Task<VerifyAccessTokenResponse> IsValidUserAccessTokenAsync(VerifyAccessTokenRequest request);
     }
 
     public class Authenticator : IAuthenticator
     {
-        public async Task<User> VerifyAccessToken(string accessToken)
+        public async Task<VerifyAccessTokenResponse> IsValidUserAccessTokenAsync(VerifyAccessTokenRequest request)
         {
             throw new NotImplementedException();
         }

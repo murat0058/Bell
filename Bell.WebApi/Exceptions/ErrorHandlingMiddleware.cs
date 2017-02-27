@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Bell.Common.Exceptions;
@@ -43,6 +44,7 @@ namespace Bell.WebApi.Exceptions
         {
             try
             {
+                // Call the next deletegate/middleware in the pipeline
                 await _next(context);
             }
             catch (Exception ex) 
@@ -66,7 +68,7 @@ namespace Bell.WebApi.Exceptions
 
                 if (reportableException != null)
                 {
-                    code = HttpStatusCode.BadRequest;
+                    code = FindErrorCode(reportableException);
                     userReportableException = reportableException;
                 }
                 else
@@ -89,24 +91,31 @@ namespace Bell.WebApi.Exceptions
             }
         }
 
+        private HttpStatusCode FindErrorCode(UserReportableException exception)
+        {
+            return exception.PrimaryErrorMessageKey == ErrorMessageKeys.ERROR_UNAUTHORIZED
+                ? HttpStatusCode.Unauthorized
+                : HttpStatusCode.BadRequest;
+        }
+
         private async Task WriteExceptionAsync(HttpContext context, HttpStatusCode code, UserReportableException exception)
         {
             var response = context.Response;
             response.ContentType = "application/json";
             response.StatusCode = (int) code;
 
-            var error = await GenerateErrorAsync(exception);
+            var error = await GenerateErrorAsync(context, exception);
 
             await response.WriteAsync(JsonConvert.SerializeObject(new { error }));
         }
 
-        public async Task<dynamic> GenerateErrorAsync(UserReportableException exception)
+        public async Task<dynamic> GenerateErrorAsync(HttpContext context, UserReportableException exception)
         {
             dynamic error = new ExpandoObject();
 
             try
             {
-                var errorMessages = await GenerateErrorMessagesAsync(exception);
+                var errorMessages = await GenerateErrorMessagesAsync(context, exception);
 
                 error.code = exception.ErrorMessages[0].Key;
                 error.messages = errorMessages;
@@ -118,8 +127,6 @@ namespace Bell.WebApi.Exceptions
                     error.details = exception.InnerException.Message;
                     error.stackTrace = exception.InnerException.StackTrace;
                 }
-
-
             }
             catch (Exception e)
             {
@@ -132,17 +139,41 @@ namespace Bell.WebApi.Exceptions
             return error;
         }
 
-        public async Task<List<string>> GenerateErrorMessagesAsync(UserReportableException exception)
+        public async Task<List<string>> GenerateErrorMessagesAsync(HttpContext context, UserReportableException exception)
         {
             var errorMessages = new List<string>();
+            var languageId = await FindUserLanguageAsync(context);
 
-            // TODO: GET THE LANGUAGE ID HERE  
             foreach (var errorMessage in exception.ErrorMessages)
             {
-                errorMessages.Add(await _translator.TranslateAsync("en-US", errorMessage.Key, errorMessage.Arguments));
+                errorMessages.Add(await _translator.TranslateAsync(languageId, errorMessage.Key, errorMessage.Arguments));
             }
 
             return errorMessages;
+        }
+
+        private async Task<string> FindUserLanguageAsync(HttpContext context)
+        {
+            var userLanguageId = _translator.DefaultLanguageId;
+
+            // TODO: NEED TO CHECK CONTEXT.USER TO SEE IF IT'S SET FIRST!!
+            var headers = context.Request.GetTypedHeaders();
+            var languages = headers.AcceptLanguage;
+
+            if (languages != null && languages.Count > 0)
+            {
+                userLanguageId = languages[0].Value;
+
+                var supportedLanguages = await
+                    _translator.FindSupportedLanguagesAsync();
+
+                if (!supportedLanguages.Contains(userLanguageId))
+                {
+                    userLanguageId = _translator.DefaultLanguageId;
+                }
+            }
+
+            return userLanguageId;
         }
 
         #endregion
