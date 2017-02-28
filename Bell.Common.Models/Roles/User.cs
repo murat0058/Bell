@@ -7,6 +7,31 @@ namespace Bell.Common.Models.Roles
     /// </summary>
     public class UserIdentifier
     {
+        /// <summary>
+        /// Creates an instance of a user identifier
+        /// </summary>
+        public UserIdentifier()
+        {
+            
+        }
+
+        /// <summary>
+        /// Creates an instance of a user identifier
+        /// </summary>
+        public UserIdentifier(User user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            Id = user.Id;
+            Email = user.Email;
+            DisplayName = user.DisplayName;
+            AvatarUrl = user.AvatarUrl;
+
+        }
+
         #region Public Properties
 
         /// <summary>

@@ -82,7 +82,7 @@ namespace Bell.WebApi.Security
             IIdentity identity = new AnonymousIdentity();
 
             // TODO: Validate Application Identity
-            b
+            //b
 
             return identity;
         }
@@ -90,13 +90,13 @@ namespace Bell.WebApi.Security
         private async Task<IIdentity> AuthenticateUserIdentityAsync(string accessToken)
         {
             IIdentity identity = new AnonymousIdentity();
-            var tokenRequest = new VerifyAccessTokenRequest {AccessToken = accessToken};
+            var tokenRequest = new VerifyUserAccessTokenRequest {AccessToken = accessToken};
 
             if ((await _authenticator.IsValidUserAccessTokenAsync(tokenRequest)).IsValid)
             {
-                UserIdentifier userIdentifier = new UserIdentifier(); // TODO: Replace with user fetching logic
-                b
-                identity = new UserIdentity(userIdentifier);
+                //UserIdentifier userIdentifier = new UserIdentifier(); // TODO: Replace with user fetching logic
+                //b
+                //identity = new UserIdentity(userIdentifier);
             }
 
             return identity;

@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Bell.Common.Models.Security
+﻿namespace Bell.Common.Models.Security
 {
     /// <summary>
     /// Represents a verify access token request
     /// </summary>
-    public class VerifyAccessTokenRequest
+    public class VerifyUserAccessTokenRequest
     {
         /// <summary>
         /// The access token
