@@ -19,11 +19,17 @@ namespace Bell.WebApi.Security
 
         #endregion
 
+        #region Constructors
+
         public AuthenticationMiddleware(RequestDelegate next, IAuthenticator authenticator)
         {
             _next = next;
             _authenticator = authenticator;
         }
+
+        #endregion
+
+        #region Public Methods
 
         /// <summary>
         /// Handles invoking each request
@@ -48,6 +54,10 @@ namespace Bell.WebApi.Security
             // Call the next delegate/middleware in the pipeline
             await _next(context);
         }
+
+        #endregion
+
+        #region Private Methods
 
         private async Task<IIdentity> EvaluateAuthorizationAsync(string authorizationString)
         {
@@ -81,8 +91,13 @@ namespace Bell.WebApi.Security
         {
             IIdentity identity = new AnonymousIdentity();
 
-            // TODO: Validate Application Identity
-            //b
+            var tokenRequest = new VerifyAccessTokenRequest { AccessToken = token };
+            var response = await _authenticator.IsValidApplicationAccessTokenAsync(tokenRequest);
+
+            if (response.IsValid)
+            {
+                identity = new ApplicationIdentity(response.Application);
+            }
 
             return identity;
         }
@@ -90,18 +105,19 @@ namespace Bell.WebApi.Security
         private async Task<IIdentity> AuthenticateUserIdentityAsync(string accessToken)
         {
             IIdentity identity = new AnonymousIdentity();
-            var tokenRequest = new VerifyUserAccessTokenRequest {AccessToken = accessToken};
 
-            if ((await _authenticator.IsValidUserAccessTokenAsync(tokenRequest)).IsValid)
+            var tokenRequest = new VerifyAccessTokenRequest {AccessToken = accessToken};
+            var response = await _authenticator.IsValidUserAccessTokenAsync(tokenRequest);
+
+            if (response.IsValid)
             {
-                //UserIdentifier userIdentifier = new UserIdentifier(); // TODO: Replace with user fetching logic
-                //b
-                //identity = new UserIdentity(userIdentifier);
+                identity = new UserIdentity(response.User);
             }
 
             return identity;
         }
 
+        #endregion
     }
 }
 

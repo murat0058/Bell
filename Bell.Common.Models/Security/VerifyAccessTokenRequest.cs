@@ -3,7 +3,7 @@
     /// <summary>
     /// Represents a verify access token request
     /// </summary>
-    public class VerifyUserAccessTokenRequest
+    public class VerifyAccessTokenRequest
     {
         /// <summary>
         /// The access token

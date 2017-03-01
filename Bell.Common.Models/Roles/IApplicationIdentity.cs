@@ -1,4 +1,5 @@
-﻿using System.Security.Principal;
+﻿using Bell.Common.Models.Environment;
+using System.Security.Principal;
 
 namespace Bell.Common.Models.Roles
 {
@@ -12,9 +13,9 @@ namespace Bell.Common.Models.Roles
         /// <summary>
         /// Creates an application identity
         /// </summary>
-        public ApplicationIdentity(string name)
+        public ApplicationIdentity(Application application)
         {
-            Name = name;
+            Application = application;
         }
 
         #endregion
@@ -34,7 +35,12 @@ namespace Bell.Common.Models.Roles
         /// <summary>
         /// The name associated with the identity
         /// </summary>
-        public string Name { get; }
+        public string Name => Application.Name;
+
+        /// <summary>
+        /// The application information
+        /// </summary>
+        public Application Application { get; }
 
         #endregion
     }
