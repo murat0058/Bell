@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Security.Claims;
-using System.Security.Principal;
 using System.Threading.Tasks;
-using Bell.Common.Models.Roles;
 using Bell.Common.Models.Security;
 using Bell.Common.Services;
 using Microsoft.AspNetCore.Http;
@@ -39,18 +37,18 @@ namespace Bell.WebApi.Security
         public async Task Invoke(HttpContext context)
         {
             StringValues authorizationValues;
-            IIdentity identity = new AnonymousIdentity();
+            ClaimsPrincipal principal = new AnonymousClaimsPrincipal();
 
             if (context.Request.Headers.TryGetValue("Authorization", out authorizationValues))
             {
                 if (authorizationValues.Count > 0)
                 {
-                    identity = await EvaluateAuthorizationAsync(authorizationValues[0]);
+                    principal = await EvaluateAuthorizationAsync(authorizationValues[0]);
                 }
             }
 
-            context.User = new ClaimsPrincipal(identity);
-
+            context.User = principal;
+            
             // Call the next delegate/middleware in the pipeline
             await _next(context);
         }
@@ -59,9 +57,9 @@ namespace Bell.WebApi.Security
 
         #region Private Methods
 
-        private async Task<IIdentity> EvaluateAuthorizationAsync(string authorizationString)
+        private async Task<ClaimsPrincipal> EvaluateAuthorizationAsync(string authorizationString)
         {
-            IIdentity identity = new AnonymousIdentity();
+            ClaimsPrincipal principal = new AnonymousClaimsPrincipal();
             var authParts = authorizationString.Split(new[] {" "}, StringSplitOptions.RemoveEmptyEntries);
 
             if (authParts.Length == 2)
@@ -74,44 +72,44 @@ namespace Bell.WebApi.Security
                     switch (scheme)
                     {
                         case "Application":
-                            identity = await AuthenticateApplicationIdentityAsync(token);
+                            principal = await AuthenticateApplicationIdentityAsync(token);
                             break;
 
                         case "User":
-                            identity = await AuthenticateUserIdentityAsync(token);
+                            principal = await AuthenticateUserIdentityAsync(token);
                             break;
                     }
                 }
             }
 
-            return identity;
+            return principal;
         }
 
-        private async Task<IIdentity> AuthenticateApplicationIdentityAsync(string token)
+        private async Task<ClaimsPrincipal> AuthenticateApplicationIdentityAsync(string token)
         {
-            IIdentity identity = new AnonymousIdentity();
+            ClaimsPrincipal principal = new AnonymousClaimsPrincipal();
 
             var tokenRequest = new VerifyAccessTokenRequest { AccessToken = token };
             var response = await _authenticator.IsValidApplicationAccessTokenAsync(tokenRequest);
 
             if (response.IsValid)
             {
-                identity = new ApplicationIdentity(response.Application);
+                principal = new ApplicationClaimsPrincipal(response.Application);
             }
 
-            return identity;
+            return principal;
         }
 
-        private async Task<IIdentity> AuthenticateUserIdentityAsync(string accessToken)
+        private async Task<ClaimsPrincipal> AuthenticateUserIdentityAsync(string accessToken)
         {
-            IIdentity identity = new AnonymousIdentity();
+            ClaimsPrincipal identity = new AnonymousClaimsPrincipal();
 
             var tokenRequest = new VerifyAccessTokenRequest {AccessToken = accessToken};
             var response = await _authenticator.IsValidUserAccessTokenAsync(tokenRequest);
 
             if (response.IsValid)
             {
-                identity = new UserIdentity(response.User);
+                identity = new UserClaimsPrincipal(response.User);
             }
 
             return identity;

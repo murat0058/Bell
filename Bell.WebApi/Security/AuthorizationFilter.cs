@@ -1,10 +1,9 @@
 ﻿using System.Linq;
-using System.Security.Principal;
+using System.Security.Claims;
 using Bell.Common.Exceptions;
 using Bell.Common.Models.Security;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Bell.Common.Models.Roles;
 using Bell.Common.Resources;
 
 namespace Bell.WebApi.Security
@@ -37,10 +36,11 @@ namespace Bell.WebApi.Security
         /// <param name="context">The authorization context</param>
         public void OnAuthorization(AuthorizationFilterContext context)
         {
-            var identity = context.HttpContext.User.Identity;
+            var claimsPrincipal = context.HttpContext.User;
+        
             var allowAnonymous = context.Filters.Any(f => f is IAllowAnonymousFilter);
 
-            var isAuthorized = allowAnonymous || IsAuthorized(identity);
+            var isAuthorized = allowAnonymous || IsAuthorized(claimsPrincipal);
 
             if (!isAuthorized)
             {
@@ -52,22 +52,22 @@ namespace Bell.WebApi.Security
 
         #region Private Methods
 
-        private bool IsAuthorized(IIdentity identity)
+        private bool IsAuthorized(ClaimsPrincipal claimsPrincipal)
         {
             bool isAuthorized;
 
             switch (_authorizationType)
             {
                 case AuthorizationType.Any:
-                    isAuthorized = identity.IsAuthenticated;
+                    isAuthorized = claimsPrincipal.Identity.IsAuthenticated;
                     break;
 
                 case AuthorizationType.Application:
-                    isAuthorized = identity is ApplicationIdentity;
+                    isAuthorized = claimsPrincipal is ApplicationClaimsPrincipal;
                     break;
 
                 case AuthorizationType.User:
-                    isAuthorized = identity is UserIdentity;
+                    isAuthorized = claimsPrincipal is UserClaimsPrincipal;
                     break;
 
                 default:

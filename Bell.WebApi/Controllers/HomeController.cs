@@ -6,7 +6,7 @@ namespace Bell.WebApi.Controllers
     [AllowAnonymous]
     [ApiExplorerSettings(IgnoreApi = true)]
     [Route("")]
-    public class HomeController : Controller
+    public class HomeController : BaseApiController
     {
         [HttpGet]
         public RedirectResult Index()

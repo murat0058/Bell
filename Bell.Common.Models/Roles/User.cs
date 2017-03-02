@@ -7,6 +7,8 @@ namespace Bell.Common.Models.Roles
     /// </summary>
     public class UserIdentifier
     {
+        #region Constructors
+
         /// <summary>
         /// Creates an instance of a user identifier
         /// </summary>
@@ -31,6 +33,8 @@ namespace Bell.Common.Models.Roles
             AvatarUrl = user.AvatarUrl;
 
         }
+
+        #endregion
 
         #region Public Properties
 
