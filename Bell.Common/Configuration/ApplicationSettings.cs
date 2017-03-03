@@ -5,6 +5,8 @@ namespace Bell.Common.Configuration
 {
     public interface IApplicationSettings
     {
+        #region Public Properties
+
         /// <summary>
         /// The name of this application
         /// </summary>
@@ -24,10 +26,37 @@ namespace Bell.Common.Configuration
         /// The universal application identifier
         /// </summary>
         string UniversalApplicationId { get; }
+
+        #endregion
+
+        #region Public Methods
+
+        /// <summary>
+        /// Indicates if the current application is in a development environment
+        /// </summary>
+        bool IsDevelopment();
+
+        /// <summary>
+        /// Indicates if the current application is in a staging environment
+        /// </summary>
+        bool IsStaging();
+
+        /// <summary>
+        /// Indicates if the current application is in a production environment
+        /// </summary>
+        bool IsProduction();
+
+        #endregion
     }
 
     public class ApplicationSettings : IApplicationSettings
     {
+        #region Private Fields
+
+        private readonly string _currentEnvironment;
+
+        #endregion
+
         #region Constructors
 
         public ApplicationSettings(ApplicationConfiguration configuration)
@@ -35,6 +64,7 @@ namespace Bell.Common.Configuration
             ApplicationName = configuration.ApplicationName;
             ApplicationToken = configuration.ApplicationToken;
             ConnectionStrings = configuration.ConnectionStrings;
+            _currentEnvironment = configuration.Environment.ToLower();
             UniversalApplicationId = configuration.UniversalApplicationId;
         }
 
@@ -49,6 +79,25 @@ namespace Bell.Common.Configuration
         public IDictionary<string, string> ConnectionStrings { get; }
 
         public string UniversalApplicationId { get; }
+
+        #endregion
+
+        #region Public Methods
+
+        public bool IsDevelopment()
+        {
+            return _currentEnvironment == "development";
+        }
+
+        public bool IsStaging()
+        {
+            return _currentEnvironment == "staging";
+        }
+
+        public bool IsProduction()
+        {
+            return _currentEnvironment == "production";
+        }
 
         #endregion
     }

@@ -7,8 +7,12 @@ using System.Dynamic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Bell.Common.Configuration;
 using Bell.Common.Exceptions;
+using Bell.Common.Models.Exceptions;
 using Bell.Common.Services;
+using Bell.WebApi.Security;
+using Newtonsoft.Json.Serialization;
 
 namespace Bell.WebApi.Exceptions
 {
@@ -17,16 +21,19 @@ namespace Bell.WebApi.Exceptions
         #region Private Fields
 
         private readonly RequestDelegate _next;
+
+        private readonly IApplicationSettings _settings;
         private readonly ILog _log;
-        private readonly ILanguageTranslator _translator; 
+        private readonly ILanguageTranslator _translator;
 
         #endregion
 
         #region Constructors
 
-        public ErrorHandlingMiddleware(RequestDelegate next, ILog log, ILanguageTranslator translator)
+        public ErrorHandlingMiddleware(RequestDelegate next, IApplicationSettings settings, ILog log, ILanguageTranslator translator)
         {
             _next = next;
+            _settings = settings;
             _log = log;
             _translator = translator;
         }
@@ -105,8 +112,12 @@ namespace Bell.WebApi.Exceptions
             response.StatusCode = (int) code;
 
             var error = await GenerateErrorAsync(context, exception);
+            var serializerSettings = new JsonSerializerSettings
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            };
 
-            await response.WriteAsync(JsonConvert.SerializeObject(new { error }));
+            await response.WriteAsync(JsonConvert.SerializeObject(new { error }, serializerSettings));
         }
 
         public async Task<dynamic> GenerateErrorAsync(HttpContext context, UserReportableException exception)
@@ -131,9 +142,16 @@ namespace Bell.WebApi.Exceptions
             catch (Exception e)
             {
                 error.code = ErrorMessageKeys.ERROR_HAS_OCCURRED;
-                error.messages = new List<string> {"An error has occurred.  The error message(s) could not be translated."};
+                error.messages = new List<string> { "An error has occurred.  The error message(s) could not be translated." };
                 error.details = e.Message;
                 error.stackTrace = e.StackTrace;
+            }
+
+            if (!_settings.IsDevelopment())
+            {
+                var errorDictionary = (IDictionary<string, object>)error;
+                errorDictionary.Remove("details");
+                errorDictionary.Remove("stackTrace");
             }
 
             return error;
@@ -154,23 +172,31 @@ namespace Bell.WebApi.Exceptions
 
         private async Task<string> FindUserLanguageAsync(HttpContext context)
         {
-            var userLanguageId = _translator.DefaultLanguageId;
+            var userPrincipal = context.User as UserClaimsPrincipal;
 
-            // TODO: NEED TO CHECK CONTEXT.USER TO SEE IF IT'S SET FIRST!!
+            string userLanguageId = (userPrincipal != null)
+                ? userPrincipal.User.LanguageId
+                : FindUserLanguageFromHeader(context);
+
+            var supportedLanguages = await _translator.FindSupportedLanguagesAsync();
+
+            if (!supportedLanguages.Contains(userLanguageId))
+            {
+                userLanguageId = _translator.DefaultLanguageId;
+            }
+
+            return userLanguageId;
+        }
+
+        private string FindUserLanguageFromHeader(HttpContext context)
+        {
+            var userLanguageId = _translator.DefaultLanguageId;
             var headers = context.Request.GetTypedHeaders();
             var languages = headers.AcceptLanguage;
 
             if (languages != null && languages.Count > 0)
             {
                 userLanguageId = languages[0].Value;
-
-                var supportedLanguages = await
-                    _translator.FindSupportedLanguagesAsync();
-
-                if (!supportedLanguages.Contains(userLanguageId))
-                {
-                    userLanguageId = _translator.DefaultLanguageId;
-                }
             }
 
             return userLanguageId;

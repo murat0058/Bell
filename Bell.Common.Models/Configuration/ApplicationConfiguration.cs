@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Bell.Common.Models.Environment;
 
 namespace Bell.Common.Models.Configuration
 {
@@ -21,6 +22,11 @@ namespace Bell.Common.Models.Configuration
         /// The application's connection strings
         /// </summary>
         public IDictionary<string, string> ConnectionStrings { get; set; }
+
+        /// <summary>
+        /// The application's environment
+        /// </summary>
+        public string Environment { get; set; }
 
         /// <summary>
         /// The universal application identifier
