@@ -9,7 +9,6 @@ using System.Net;
 using System.Threading.Tasks;
 using Bell.Common.Configuration;
 using Bell.Common.Exceptions;
-using Bell.Common.Models.Exceptions;
 using Bell.Common.Services;
 using Bell.WebApi.Security;
 using Newtonsoft.Json.Serialization;
