@@ -1,8 +1,9 @@
 {
-  "version": "1.0.0-*",
+  "version": "0.1.0-*",
 
   "dependencies": {
-    "Bell.Common.Models": "1.0.0-*",
+    "BCrypt.Net-Core": "1.1.0",
+    "Bell.Common.Models": "0.1.0-*",
     "DryIoc.Microsoft.DependencyInjection": "1.0.2",
     "FluentValidation.AspNetCore": "6.4.0-rc3",
     "Microsoft.Extensions.Caching.Abstractions": "1.1.0",

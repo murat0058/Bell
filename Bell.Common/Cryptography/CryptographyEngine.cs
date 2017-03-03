@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Security.Cryptography;
 
-namespace Bell.Cryptography
+namespace Bell.Common.Cryptography
 {
     public static class CryptographyEngine
     {
