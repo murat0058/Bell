@@ -1,6 +1,10 @@
 ﻿{
   "version": "0.1.0-beta-*",
 
+  "packOptions": {
+    "licenseUrl": "https://github.com/bmbell/Bell/blob/master/LICENSE"
+  },
+
   "dependencies": {
     "Dapper": "1.50.2",
     "FastMember": "1.1.0",
