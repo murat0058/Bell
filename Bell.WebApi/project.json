@@ -1,8 +1,8 @@
 {
-  "version": "0.1.0-*",
+  "version": "0.1.0-beta-*",
 
   "dependencies": {
-    "Bell.Common": "0.1.0-*",
+    "Bell.Common": "0.1.0-beta-*",
     "Microsoft.AspNetCore.Authentication": "1.0.0",
     "Microsoft.AspNetCore.Mvc": "1.1.0",
     "Microsoft.Extensions.DependencyInjection.Abstractions": "1.1.0",
